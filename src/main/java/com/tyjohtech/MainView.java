@@ -24,7 +24,9 @@ public class MainView extends VBox {
     private Affine affine;
 
     private Simulation simulation;
-    private Simulation initalSimulation;
+    private Simulation initialSimulation;
+
+    private Simulator simulator;
 
     private int drawMode = Simulation.ALIVE;
 
@@ -54,8 +56,8 @@ public class MainView extends VBox {
         this.affine = new Affine();
         this.affine.appendScale(400 / 10f, 400 / 10f);
 
-        this.initalSimulation = new Simulation(10, 10);
-        this.simulation = Simulation.copy(this.initalSimulation);
+        this.initialSimulation = new Simulation(10, 10);
+        this.simulation = Simulation.copy(this.initialSimulation);
     }
 
     private void handleMoved(MouseEvent mouseEvent) {
@@ -87,7 +89,7 @@ public class MainView extends VBox {
 
         System.out.println(simX + ", " + simY);
 
-        this.initalSimulation.setState(simX, simY, drawMode);
+        this.initialSimulation.setState(simX, simY, drawMode);
         draw();
     }
 
@@ -111,7 +113,7 @@ public class MainView extends VBox {
         g.fillRect(0, 0, 450, 450);
 
         if (this.applicationState == EDITING) {
-            drawSimulation(this.initalSimulation);
+            drawSimulation(this.initialSimulation);
         } else {
             drawSimulation(this.simulation);
         }
@@ -155,11 +157,16 @@ public class MainView extends VBox {
         }
 
         if (applicationState == SIMULATING) {
-            this.simulation = Simulation.copy(this.initalSimulation);
+            this.simulation = Simulation.copy(this.initialSimulation);
+            this.simulator = new Simulator(this, this.simulation);
         }
 
         this.applicationState = applicationState;
 
         System.out.println("Application State: " + this.applicationState);
+    }
+
+    public Simulator getSimulator() {
+        return simulator;
     }
 }
