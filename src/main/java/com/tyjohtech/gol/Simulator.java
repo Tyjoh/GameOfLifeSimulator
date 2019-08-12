@@ -1,4 +1,4 @@
-package com.tyjohtech;
+package com.tyjohtech.gol;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;

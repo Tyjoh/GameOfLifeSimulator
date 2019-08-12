@@ -31,7 +31,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.1</version>
                 <configuration>
-                    <mainClass>com.tyjohtech.App</mainClass>
+                    <mainClass>com.tyjohtech.gol.App</mainClass>
                 </configuration>
             </plugin>
         </plugins>

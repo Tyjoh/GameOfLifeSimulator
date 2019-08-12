@@ -1,5 +1,6 @@
-package com.tyjohtech;
+package com.tyjohtech.gol;
 
+import com.tyjohtech.gol.model.CellState;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -27,9 +28,9 @@ public class InfoBar extends HBox {
 
     }
 
-    public void setDrawMode(int drawMode) {
+    public void setDrawMode(CellState drawMode) {
         String drawModeString;
-        if (drawMode == Simulation.ALIVE) {
+        if (drawMode == CellState.ALIVE) {
             drawModeString = "Drawing";
         } else {
             drawModeString = "Erasing";
