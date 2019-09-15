@@ -23,7 +23,7 @@ public class StandardRule implements SimulationRule {
         return CellState.DEAD;
     }
 
-    public int countAliveNeighbours(int x, int y, Board board) {
+    private int countAliveNeighbours(int x, int y, Board board) {
         int count = 0;
 
         count += countCell(x - 1, y - 1, board);
