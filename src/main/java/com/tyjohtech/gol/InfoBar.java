@@ -1,6 +1,7 @@
 package com.tyjohtech.gol;
 
 import com.tyjohtech.gol.model.CellState;
+import com.tyjohtech.gol.viewmodel.ApplicationViewModel;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -14,7 +15,7 @@ public class InfoBar extends HBox {
     private Label cursor;
     private Label editingTool;
 
-    public InfoBar() {
+    public InfoBar(ApplicationViewModel applicationViewModel) {
 
         this.editingTool = new Label();
         this.cursor = new Label();
