@@ -1,4 +1,4 @@
-package com.tyjohtech.gol.viewmodel;
+package com.tyjohtech.gol.viewmodel.application;
 
 import java.util.Objects;
 

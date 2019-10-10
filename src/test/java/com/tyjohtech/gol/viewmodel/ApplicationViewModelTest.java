@@ -1,6 +1,8 @@
 package com.tyjohtech.gol.viewmodel;
 
-import com.tyjohtech.gol.model.CellState;
+import com.tyjohtech.gol.viewmodel.application.ApplicationState;
+import com.tyjohtech.gol.viewmodel.application.ApplicationViewModel;
+import com.tyjohtech.gol.viewmodel.application.CursorPosition;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,20 +15,18 @@ class ApplicationViewModelTest {
 
     @BeforeEach
     void setUp() {
-        this.viewModel = ApplicationViewModel.defaults();
+        this.viewModel = new ApplicationViewModel();
     }
 
     @Test
     void confirmDefaultState() {
-        assertEquals(ApplicationState.EDITING, this.viewModel.getApplicationState());
-        assertEquals(CellState.ALIVE, this.viewModel.getDrawMode());
+        assertEquals(ApplicationState.STOPPED, this.viewModel.getApplicationState());
         assertEquals(new CursorPosition(0, 0), this.viewModel.getCursorPosition());
     }
 
     @Test
     void applicationState_updateValue() {
-        this.viewModel.onApplicationStateChange(((oldValue, newValue) -> {
-            assertEquals(ApplicationState.EDITING, oldValue);
+        this.viewModel.listenToApplicationState(((newValue) -> {
             assertEquals(ApplicationState.SIMULATING, newValue);
         }));
 
@@ -35,7 +35,7 @@ class ApplicationViewModelTest {
 
     @Test
     void applicationState_updateToSameValue() {
-        this.viewModel.onApplicationStateChange(((oldValue, newValue) -> {
+        this.viewModel.listenToApplicationState(((newValue) -> {
             fail();
         }));
 
@@ -43,28 +43,8 @@ class ApplicationViewModelTest {
     }
 
     @Test
-    void drawMode_updateValue() {
-        this.viewModel.listenToDrawMode(((oldValue, newValue) -> {
-            assertEquals(CellState.ALIVE, oldValue);
-            assertEquals(CellState.DEAD, newValue);
-        }));
-
-        this.viewModel.setDrawMode(CellState.DEAD);
-    }
-
-    @Test
-    void drawMode_updateToSameValue() {
-        this.viewModel.listenToDrawMode(((oldValue, newValue) -> {
-            fail();
-        }));
-
-        this.viewModel.setDrawMode(CellState.ALIVE);
-    }
-
-    @Test
     void cursorPosition_updateValue() {
-        this.viewModel.listenToCursorPosition(((oldValue, newValue) -> {
-            assertEquals(new CursorPosition(0, 0), oldValue);
+        this.viewModel.listenToCursorPosition(((newValue) -> {
             assertEquals(new CursorPosition(9, 10), newValue);
         }));
 
@@ -73,7 +53,7 @@ class ApplicationViewModelTest {
 
     @Test
     void cursorPosition_updateToSameValue() {
-        this.viewModel.listenToCursorPosition(((oldValue, newValue) -> {
+        this.viewModel.listenToCursorPosition(((newValue) -> {
             fail();
         }));
 

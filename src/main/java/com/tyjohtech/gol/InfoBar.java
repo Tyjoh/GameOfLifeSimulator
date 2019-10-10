@@ -1,7 +1,9 @@
 package com.tyjohtech.gol;
 
-import com.tyjohtech.gol.model.CellState;
-import com.tyjohtech.gol.viewmodel.ApplicationViewModel;
+import com.tyjohtech.gol.viewmodel.application.ApplicationViewModel;
+import com.tyjohtech.gol.viewmodel.application.CursorPosition;
+import com.tyjohtech.gol.viewmodel.editor.DrawMode;
+import com.tyjohtech.gol.viewmodel.editor.EditorViewModel;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -15,7 +17,9 @@ public class InfoBar extends HBox {
     private Label cursor;
     private Label editingTool;
 
-    public InfoBar(ApplicationViewModel applicationViewModel) {
+    public InfoBar(ApplicationViewModel applicationViewModel, EditorViewModel editorViewModel) {
+        applicationViewModel.listenToCursorPosition(this::updateCursorPosition);
+        editorViewModel.listenToDrawMode(this::updateDrawMode);
 
         this.editingTool = new Label();
         this.cursor = new Label();
@@ -29,19 +33,21 @@ public class InfoBar extends HBox {
 
     }
 
-    public void setDrawMode(CellState drawMode) {
+    private void updateDrawMode(DrawMode drawMode) {
         String drawModeString;
-        if (drawMode == CellState.ALIVE) {
+        if (drawMode == DrawMode.PENCIL) {
             drawModeString = "Drawing";
-        } else {
+        } else if (drawMode == DrawMode.ERASER) {
             drawModeString = "Erasing";
+        } else {
+            drawModeString = "Unknown draw mode";
         }
 
         this.editingTool.setText(String.format(drawModeFormat, drawModeString));
     }
 
-    public void setCursorPosition(int x, int y) {
-        this.cursor.setText(String.format(cursorPosFormat, x, y));
+    private void updateCursorPosition(CursorPosition cursorPosition) {
+        this.cursor.setText(String.format(cursorPosFormat, cursorPosition.getX(), cursorPosition.getY()));
     }
 
 }

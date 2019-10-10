@@ -1,18 +1,20 @@
 package com.tyjohtech.gol;
 
-import com.tyjohtech.gol.model.CellState;
+import com.tyjohtech.gol.viewmodel.editor.DrawMode;
+import com.tyjohtech.gol.viewmodel.editor.EditorViewModel;
+import com.tyjohtech.gol.viewmodel.simulation.SimulationViewModel;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
 
 public class Toolbar extends ToolBar {
 
-    private MainView mainView;
+    private EditorViewModel editorViewModel;
+    private SimulationViewModel simulationViewModel;
 
-    private Simulator simulator;
-
-    public Toolbar(MainView mainView) {
-        this.mainView = mainView;
+    public Toolbar(EditorViewModel editorViewModel, SimulationViewModel simulationViewModel) {
+        this.editorViewModel = editorViewModel;
+        this.simulationViewModel = simulationViewModel;
         Button draw = new Button("Draw");
         draw.setOnAction(this::handleDraw);
         Button erase = new Button("Erase");
@@ -30,44 +32,27 @@ public class Toolbar extends ToolBar {
     }
 
     private void handleStop(ActionEvent actionEvent) {
-        this.simulator.stop();
+        this.simulationViewModel.stopSimulation();
     }
 
     private void handleStart(ActionEvent actionEvent) {
-        switchToSimulatingState();
-        this.simulator.start();
+        this.simulationViewModel.startSimulation();
     }
 
     private void handleReset(ActionEvent actionEvent) {
-        this.mainView.setApplicationState(MainView.EDITING);
-        this.simulator = null;
-        this.mainView.draw();
+        this.simulationViewModel.reset();
     }
 
     private void handleStep(ActionEvent actionEvent) {
-        System.out.println("Step pressed");
-
-        switchToSimulatingState();
-
-        this.mainView.getSimulation().step();
-        this.mainView.draw();
-    }
-
-    private void switchToSimulatingState() {
-        if (this.mainView.getApplicationState() == MainView.EDITING) {
-            this.mainView.setApplicationState(MainView.SIMULATING);
-            this.simulator = new Simulator(this.mainView, this.mainView.getSimulation());
-        }
+        this.simulationViewModel.stepSimulation();
     }
 
     private void handleErase(ActionEvent actionEvent) {
-        System.out.println("Erase pressed");
-        this.mainView.setDrawMode(CellState.DEAD);
+        this.editorViewModel.setDrawMode(DrawMode.ERASER);
     }
 
     private void handleDraw(ActionEvent actionEvent) {
-        System.out.println("Draw pressed");
-        this.mainView.setDrawMode(CellState.ALIVE);
+        this.editorViewModel.setDrawMode(DrawMode.PENCIL);
     }
 
 }
