@@ -16,19 +16,19 @@ public class App extends Application {
     public void start(Stage stage) {
         ApplicationViewModel appViewModel = new ApplicationViewModel(ApplicationState.EDITING);
         BoardViewModel boardViewModel = new BoardViewModel();
-        Board board = new BoundedBoard(10, 10);
+        Board board = new BoundedBoard(20, 12);
         EditorViewModel editorViewModel = new EditorViewModel(boardViewModel, board);
         SimulationViewModel simulationViewModel = new SimulationViewModel(boardViewModel);
 
         appViewModel.listenToAppState(editorViewModel::onAppStateChanged);
         appViewModel.listenToAppState(simulationViewModel::onAppStateChanged);
 
+        boardViewModel.setBoard(board);
         MainView mainView = new MainView(appViewModel, boardViewModel, editorViewModel, simulationViewModel);
         Scene scene = new Scene(mainView, 640, 480);
         stage.setScene(scene);
         stage.show();
 
-        boardViewModel.setBoard(board);
     }
 
     public static void main(String[] args) {

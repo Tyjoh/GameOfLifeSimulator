@@ -17,8 +17,8 @@ public class Simulation {
     public void step() {
         Board nextState = simulationBoard.copy();
 
-        for (int y = 0; y < simulationBoard.getWidth(); y++) {
-            for (int x = 0; x < simulationBoard.getHeight(); x++) {
+        for (int y = 0; y < simulationBoard.getHeight(); y++) {
+            for (int x = 0; x < simulationBoard.getWidth(); x++) {
                 CellState newState = simulationRule.getNextState(x, y, simulationBoard);
                 nextState.setState(x, y, newState);
             }
