@@ -2,10 +2,7 @@ package com.tyjohtech.gol;
 
 import com.tyjohtech.gol.model.Board;
 import com.tyjohtech.gol.model.BoundedBoard;
-import com.tyjohtech.gol.viewmodel.ApplicationState;
-import com.tyjohtech.gol.viewmodel.ApplicationViewModel;
-import com.tyjohtech.gol.viewmodel.BoardViewModel;
-import com.tyjohtech.gol.viewmodel.EditorViewModel;
+import com.tyjohtech.gol.viewmodel.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -21,10 +18,12 @@ public class App extends Application {
         BoardViewModel boardViewModel = new BoardViewModel();
         Board board = new BoundedBoard(10, 10);
         EditorViewModel editorViewModel = new EditorViewModel(boardViewModel, board);
+        SimulationViewModel simulationViewModel = new SimulationViewModel(boardViewModel);
 
         appViewModel.listenToAppState(editorViewModel::onAppStateChanged);
+        appViewModel.listenToAppState(simulationViewModel::onAppStateChanged);
 
-        MainView mainView = new MainView(appViewModel, boardViewModel, editorViewModel);
+        MainView mainView = new MainView(appViewModel, boardViewModel, editorViewModel, simulationViewModel);
         Scene scene = new Scene(mainView, 640, 480);
         stage.setScene(scene);
         stage.show();

@@ -1,11 +1,10 @@
 package com.tyjohtech.gol;
 
 import com.tyjohtech.gol.model.CellState;
-import com.tyjohtech.gol.model.StandardRule;
 import com.tyjohtech.gol.viewmodel.ApplicationState;
 import com.tyjohtech.gol.viewmodel.ApplicationViewModel;
-import com.tyjohtech.gol.viewmodel.BoardViewModel;
 import com.tyjohtech.gol.viewmodel.EditorViewModel;
+import com.tyjohtech.gol.viewmodel.SimulationViewModel;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
@@ -13,15 +12,14 @@ import javafx.scene.control.ToolBar;
 public class Toolbar extends ToolBar {
 
     private ApplicationViewModel applicationViewModel;
-    private BoardViewModel boardViewModel;
 
-    private Simulator simulator;
+    private SimulationViewModel simulationViewModel;
     private EditorViewModel editorViewModel;
 
-    public Toolbar(EditorViewModel editorViewModel, ApplicationViewModel applicationViewModel, BoardViewModel boardViewModel) {
+    public Toolbar(EditorViewModel editorViewModel, ApplicationViewModel applicationViewModel, SimulationViewModel simulationViewModel) {
         this.editorViewModel = editorViewModel;
         this.applicationViewModel = applicationViewModel;
-        this.boardViewModel = boardViewModel;
+        this.simulationViewModel = simulationViewModel;
         Button draw = new Button("Draw");
         draw.setOnAction(this::handleDraw);
         Button erase = new Button("Erase");
@@ -39,30 +37,27 @@ public class Toolbar extends ToolBar {
     }
 
     private void handleStop(ActionEvent actionEvent) {
-        this.simulator.stop();
+        this.simulationViewModel.stop();
     }
 
     private void handleStart(ActionEvent actionEvent) {
         switchToSimulatingState();
-        this.simulator.start();
+        this.simulationViewModel.start();
     }
 
     private void handleReset(ActionEvent actionEvent) {
         this.applicationViewModel.setCurrentState(ApplicationState.EDITING);
-        this.simulator = null;
     }
 
     private void handleStep(ActionEvent actionEvent) {
         System.out.println("Step pressed");
 
         switchToSimulatingState();
-        this.simulator.doStep();
+        this.simulationViewModel.doStep();
     }
 
     private void switchToSimulatingState() {
         this.applicationViewModel.setCurrentState(ApplicationState.SIMULATING);
-        Simulation simulation = new Simulation(boardViewModel.getBoard(), new StandardRule());
-        this.simulator = new Simulator(this.boardViewModel, simulation);
     }
 
     private void handleErase(ActionEvent actionEvent) {
