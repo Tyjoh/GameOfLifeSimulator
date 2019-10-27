@@ -2,9 +2,9 @@ package com.tyjohtech.gol;
 
 import com.tyjohtech.gol.model.Board;
 import com.tyjohtech.gol.model.CellState;
-import com.tyjohtech.gol.viewmodel.ApplicationState;
 import com.tyjohtech.gol.viewmodel.ApplicationViewModel;
 import com.tyjohtech.gol.viewmodel.BoardViewModel;
+import com.tyjohtech.gol.viewmodel.EditorViewModel;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -25,21 +25,13 @@ public class MainView extends VBox {
 
     private Affine affine;
 
-    private Board initialBoard;
-
-    private CellState drawMode = CellState.ALIVE;
-
-    private ApplicationViewModel appViewModel;
+    private EditorViewModel editorViewModel;
     private BoardViewModel boardViewModel;
 
-    private boolean isDrawingEnabled = true;
-
-    public MainView(ApplicationViewModel appViewModel, BoardViewModel boardViewModel, Board initialBoard) {
-        this.appViewModel = appViewModel;
+    public MainView(ApplicationViewModel appViewModel, BoardViewModel boardViewModel, EditorViewModel editorViewModel) {
         this.boardViewModel = boardViewModel;
-        this.initialBoard = initialBoard;
+        this.editorViewModel = editorViewModel;
 
-        this.appViewModel.listenToAppState(this::onApplicationStateChanged);
         this.boardViewModel.listenToBoard(this::onBoardChanged);
 
         this.canvas = new Canvas(400, 400);
@@ -49,10 +41,9 @@ public class MainView extends VBox {
 
         this.setOnKeyPressed(this::onKeyPressed);
 
-        Toolbar toolbar = new Toolbar(this, appViewModel, boardViewModel);
+        Toolbar toolbar = new Toolbar(editorViewModel, appViewModel, boardViewModel);
 
-        this.infoBar = new InfoBar();
-        this.infoBar.setDrawMode(this.drawMode);
+        this.infoBar = new InfoBar(editorViewModel);
         this.infoBar.setCursorPosition(0, 0);
 
         Pane spacer = new Pane();
@@ -70,17 +61,6 @@ public class MainView extends VBox {
         draw(board);
     }
 
-    private void onApplicationStateChanged(ApplicationState state) {
-        if (state == ApplicationState.EDITING) {
-            this.isDrawingEnabled = true;
-            this.boardViewModel.setBoard(this.initialBoard);
-        } else if (state == ApplicationState.SIMULATING) {
-            this.isDrawingEnabled = false;
-        } else {
-            throw new IllegalArgumentException("Unsupported ApplicationState " + state.name());
-        }
-    }
-
     private void handleMoved(MouseEvent mouseEvent) {
         Point2D simCoord = this.getSimulationCoordinates(mouseEvent);
 
@@ -89,20 +69,13 @@ public class MainView extends VBox {
 
     private void onKeyPressed(KeyEvent keyEvent) {
         if (keyEvent.getCode() == KeyCode.D) {
-            this.drawMode = CellState.ALIVE;
-            System.out.println("Draw mode");
+            this.editorViewModel.setDrawMode(CellState.ALIVE);
         } else if (keyEvent.getCode() == KeyCode.E) {
-            this.drawMode = CellState.DEAD;
-            System.out.println("Erase mode");
+            this.editorViewModel.setDrawMode(CellState.DEAD);
         }
     }
 
     private void handleDraw(MouseEvent event) {
-
-        if (!isDrawingEnabled) {
-            return;
-        }
-
         Point2D simCoord = this.getSimulationCoordinates(event);
 
         int simX = (int) simCoord.getX();
@@ -110,8 +83,7 @@ public class MainView extends VBox {
 
         System.out.println(simX + ", " + simY);
 
-        this.initialBoard.setState(simX, simY, drawMode);
-        this.boardViewModel.setBoard(this.initialBoard);
+        this.editorViewModel.boardPressed(simX, simY);
     }
 
     private Point2D getSimulationCoordinates(MouseEvent event) {
@@ -157,10 +129,5 @@ public class MainView extends VBox {
                 }
             }
         }
-    }
-
-    public void setDrawMode(CellState newDrawMode) {
-        this.drawMode = newDrawMode;
-        this.infoBar.setDrawMode(newDrawMode);
     }
 }

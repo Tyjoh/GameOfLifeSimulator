@@ -5,20 +5,21 @@ import com.tyjohtech.gol.model.StandardRule;
 import com.tyjohtech.gol.viewmodel.ApplicationState;
 import com.tyjohtech.gol.viewmodel.ApplicationViewModel;
 import com.tyjohtech.gol.viewmodel.BoardViewModel;
+import com.tyjohtech.gol.viewmodel.EditorViewModel;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
 
 public class Toolbar extends ToolBar {
 
-    private MainView mainView;
     private ApplicationViewModel applicationViewModel;
     private BoardViewModel boardViewModel;
 
     private Simulator simulator;
+    private EditorViewModel editorViewModel;
 
-    public Toolbar(MainView mainView, ApplicationViewModel applicationViewModel, BoardViewModel boardViewModel) {
-        this.mainView = mainView;
+    public Toolbar(EditorViewModel editorViewModel, ApplicationViewModel applicationViewModel, BoardViewModel boardViewModel) {
+        this.editorViewModel = editorViewModel;
         this.applicationViewModel = applicationViewModel;
         this.boardViewModel = boardViewModel;
         Button draw = new Button("Draw");
@@ -66,12 +67,12 @@ public class Toolbar extends ToolBar {
 
     private void handleErase(ActionEvent actionEvent) {
         System.out.println("Erase pressed");
-        this.mainView.setDrawMode(CellState.DEAD);
+        this.editorViewModel.setDrawMode(CellState.DEAD);
     }
 
     private void handleDraw(ActionEvent actionEvent) {
         System.out.println("Draw pressed");
-        this.mainView.setDrawMode(CellState.ALIVE);
+        this.editorViewModel.setDrawMode(CellState.ALIVE);
     }
 
 }

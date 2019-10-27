@@ -1,6 +1,7 @@
 package com.tyjohtech.gol;
 
 import com.tyjohtech.gol.model.CellState;
+import com.tyjohtech.gol.viewmodel.EditorViewModel;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -14,8 +15,8 @@ public class InfoBar extends HBox {
     private Label cursor;
     private Label editingTool;
 
-    public InfoBar() {
-
+    public InfoBar(EditorViewModel editorViewModel) {
+        editorViewModel.listenToDrawMode(this::setDrawMode);
         this.editingTool = new Label();
         this.cursor = new Label();
 
@@ -28,7 +29,7 @@ public class InfoBar extends HBox {
 
     }
 
-    public void setDrawMode(CellState drawMode) {
+    private void setDrawMode(CellState drawMode) {
         String drawModeString;
         if (drawMode == CellState.ALIVE) {
             drawModeString = "Drawing";
