@@ -1,26 +1,26 @@
 package com.tyjohtech.gol;
 
+import com.tyjohtech.gol.viewmodel.BoardViewModel;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
 import javafx.util.Duration;
 
 public class Simulator {
 
     private Timeline timeline;
-    private MainView mainView;
+    private BoardViewModel boardViewModel;
     private Simulation simulation;
 
-    public Simulator(MainView mainView, Simulation simulation) {
-        this.mainView = mainView;
+    public Simulator(BoardViewModel boardViewModel, Simulation simulation) {
+        this.boardViewModel = boardViewModel;
         this.simulation = simulation;
-        this.timeline = new Timeline(new KeyFrame(Duration.millis(500), this::doStep));
+        this.timeline = new Timeline(new KeyFrame(Duration.millis(500), event -> this.doStep()));
         this.timeline.setCycleCount(Timeline.INDEFINITE);
     }
 
-    private void doStep(ActionEvent actionEvent) {
+    public void doStep() {
         this.simulation.step();
-        this.mainView.draw();
+        this.boardViewModel.setBoard(this.simulation.getBoard());
     }
 
     public void start() {
