@@ -27,13 +27,11 @@ public class MainView extends VBox {
     private Affine affine;
 
     private EditorViewModel editorViewModel;
-    private BoardViewModel boardViewModel;
 
     public MainView(ApplicationViewModel appViewModel, BoardViewModel boardViewModel, EditorViewModel editorViewModel, SimulationViewModel simulationViewModel) {
-        this.boardViewModel = boardViewModel;
         this.editorViewModel = editorViewModel;
 
-        this.boardViewModel.listenToBoard(this::onBoardChanged);
+        boardViewModel.listenToBoard(this::onBoardChanged);
 
         this.canvas = new Canvas(400, 400);
         this.canvas.setOnMousePressed(this::handleDraw);
@@ -64,7 +62,6 @@ public class MainView extends VBox {
 
     private void handleMoved(MouseEvent mouseEvent) {
         Point2D simCoord = this.getSimulationCoordinates(mouseEvent);
-
         this.infoBar.setCursorPosition((int) simCoord.getX(), (int) simCoord.getY());
     }
 
@@ -92,14 +89,13 @@ public class MainView extends VBox {
         double mouseY = event.getY();
 
         try {
-            Point2D simCoord = this.affine.inverseTransform(mouseX, mouseY);
-            return simCoord;
+            return this.affine.inverseTransform(mouseX, mouseY);
         } catch (NonInvertibleTransformException e) {
             throw new RuntimeException("Non invertible transform");
         }
     }
 
-    public void draw(Board board) {
+    private void draw(Board board) {
         GraphicsContext g = this.canvas.getGraphicsContext2D();
         g.setTransform(this.affine);
 
