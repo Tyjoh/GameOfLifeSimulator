@@ -28,6 +28,7 @@ public class KeyValuePane extends VBox {
 
     private Label getLabel(String key) {
         Label keyLabel = new Label(key);
+        keyLabel.getStyleClass().addAll("font-primary");
         keyLabel.setMaxWidth(Integer.MAX_VALUE);
         HBox.setHgrow(keyLabel, Priority.ALWAYS);
         return keyLabel;

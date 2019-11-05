@@ -1,0 +1,27 @@
+
+@import "button_style.css";
+@import "color_palette.css";
+@import "pane_style.css";
+
+
+.root: {
+    -fx-font-family: "Courier New";
+}
+
+.font-primary {
+    -fx-text-fill: -text-primary-color;
+}
+
+.font-secondary {
+    -fx-text-fill: -text-secondary-color;
+}
+
+.font-header-1 {
+    -fx-font-size: 48;
+    -fx-font-weight: bold;
+}
+
+.font-header-2 {
+    -fx-font-size: 32;
+    -fx-font-weight: 500;
+}

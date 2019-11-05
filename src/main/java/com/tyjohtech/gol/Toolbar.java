@@ -20,6 +20,8 @@ public class Toolbar extends ToolBar {
         this.editorViewModel = editorViewModel;
         this.applicationViewModel = applicationViewModel;
         this.simulationViewModel = simulationViewModel;
+        this.getStyleClass().addAll("pane");
+
         Button draw = new Button("Draw");
         draw.setOnAction(this::handleDraw);
         Button erase = new Button("Erase");

@@ -1,0 +1,24 @@
+
+@import "color_palette.css";
+
+.button {
+    -fx-background-color: -background-secondary-color;
+    -fx-margin: 0;
+    -fx-padding: 0 5;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-text-fill: -text-primary-color;
+}
+
+.button:hover {
+    -fx-background-color: -background-primary-color;
+    -fx-scale-x: 1.07;
+    -fx-scale-y: 1.07;
+    -fx-text-fill: -text-primary-color;
+}
+
+.button:pressed {
+    -fx-background-color: -background-primary-color;
+    -fx-scale-x: 0.93;
+    -fx-scale-y: 0.93;
+}

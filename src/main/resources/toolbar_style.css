@@ -1,0 +1,5 @@
+.toolbar {
+    -fx-background-color: -background-primary-color;
+    -fx-padding: 2px;
+    -fx-margin: 2px;
+}

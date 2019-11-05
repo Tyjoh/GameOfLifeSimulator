@@ -1,0 +1,10 @@
+
+@import "color_palette.css";
+
+
+.pane {
+    -fx-padding: 8;
+    -fx-border-color: -text-secondary-color;
+    -fx-border-width: 0.25;
+    -fx-background-color: -background-secondary-color;
+}

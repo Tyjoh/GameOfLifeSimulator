@@ -36,7 +36,7 @@ public class SimulationCanvas extends Pane {
         this.getChildren().add(this.canvas);
 
         this.affine = new Affine();
-        this.affine.appendScale(400 / 10f, 400 / 10f);
+        this.affine.appendScale(200 / 10f, 200 / 10f);
     }
 
     @Override
