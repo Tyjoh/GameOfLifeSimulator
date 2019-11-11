@@ -1,5 +1,7 @@
 package com.tyjohtech.gol.viewmodel;
 
+import com.tyjohtech.gol.property.SimpleChangeListener;
+
 import java.util.LinkedList;
 import java.util.List;
 

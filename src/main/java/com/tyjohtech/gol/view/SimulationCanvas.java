@@ -1,80 +1,60 @@
 package com.tyjohtech.gol.view;
 
 import com.tyjohtech.gol.model.Board;
+import com.tyjohtech.gol.model.CellPosition;
+import com.tyjohtech.gol.model.CellRegion;
 import com.tyjohtech.gol.model.CellState;
 import com.tyjohtech.gol.viewmodel.BoardViewModel;
-import com.tyjohtech.gol.viewmodel.EditorViewModel;
-import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.transform.Affine;
-import javafx.scene.transform.NonInvertibleTransformException;
 
 public class SimulationCanvas extends Pane {
 
     private Canvas canvas;
-
-    private Affine affine;
-    private EditorViewModel editorViewModel;
     private BoardViewModel boardViewModel;
 
-    public SimulationCanvas(EditorViewModel editorViewModel, BoardViewModel boardViewModel) {
-        this.editorViewModel = editorViewModel;
+    public SimulationCanvas(BoardViewModel boardViewModel) {
         this.boardViewModel = boardViewModel;
-        boardViewModel.listenToBoard(this::draw);
+
+        this.boardViewModel.getCurrentBoard().listen(value -> draw());
+        this.boardViewModel.getCursorPosition().listen(value -> draw());
+        this.boardViewModel.getBoardViewTransform().listen(value -> draw());
+        this.boardViewModel.getSelection().listen(value -> draw());
 
         this.canvas = new Canvas(400, 400);
-        this.canvas.setOnMousePressed(this::handleDraw);
-        this.canvas.setOnMouseDragged(this::handleDraw);
 
         this.canvas.widthProperty().bind(this.widthProperty());
         this.canvas.heightProperty().bind(this.heightProperty());
 
         this.getChildren().add(this.canvas);
-
-        this.affine = new Affine();
-        this.affine.appendScale(400 / 10f, 400 / 10f);
     }
 
     @Override
     public void resize(double width, double height) {
         super.resize(width, height);
-        draw(boardViewModel.getBoard());
+        draw();
     }
 
-    private void handleDraw(MouseEvent event) {
-        Point2D simCoord = this.getSimulationCoordinates(event);
+    private void draw() {
+        Board board = boardViewModel.getCurrentBoard().get();
 
-        int simX = (int) simCoord.getX();
-        int simY = (int) simCoord.getY();
-
-        System.out.println(simX + ", " + simY);
-
-        this.editorViewModel.boardPressed(simX, simY);
-    }
-
-    private Point2D getSimulationCoordinates(MouseEvent event) {
-        double mouseX = event.getX();
-        double mouseY = event.getY();
-
-        try {
-            return this.affine.inverseTransform(mouseX, mouseY);
-        } catch (NonInvertibleTransformException e) {
-            throw new RuntimeException("Non invertible transform");
-        }
-    }
-
-    private void draw(Board board) {
         GraphicsContext g = this.canvas.getGraphicsContext2D();
-        g.setTransform(this.affine);
+        g.setTransform(boardViewModel.getBoardViewTransform().get());
 
         g.setFill(Color.LIGHTGRAY);
         g.fillRect(0, 0, 450, 450);
 
         this.drawSimulation(board);
+
+        if (boardViewModel.getSelection().isPresent()) {
+            this.drawSelection(boardViewModel.getSelection().get());
+        }
+
+        if (boardViewModel.getCursorPosition().isPresent()) {
+            this.drawCursor(boardViewModel.getCursorPosition().get());
+        }
 
         g.setStroke(Color.GRAY);
         g.setLineWidth(0.05);
@@ -98,5 +78,21 @@ public class SimulationCanvas extends Pane {
                 }
             }
         }
+    }
+
+    private void drawSelection(CellRegion region) {
+        GraphicsContext g = this.canvas.getGraphicsContext2D();
+        g.setFill(new Color(0.1, 0.1, 0.1, 0.1));
+        for (int x = region.getTopLeft().getX(); x <= region.getBottomRight().getX(); x++) {
+            for (int y = region.getTopLeft().getY(); y <= region.getBottomRight().getY(); y++) {
+                g.fillRect(x, y, 1, 1);
+            }
+        }
+    }
+
+    private void drawCursor(CellPosition position) {
+        GraphicsContext g = this.canvas.getGraphicsContext2D();
+        g.setFill(new Color(0.1, 0.1, 0.1, 0.1));
+        g.fillRect(position.getX(), position.getY(), 1, 1);
     }
 }

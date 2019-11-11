@@ -1,5 +1,6 @@
 package com.tyjohtech.gol.viewmodel;
 
+import com.tyjohtech.gol.property.SimpleChangeListener;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

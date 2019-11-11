@@ -1,4 +1,4 @@
-package com.tyjohtech.gol.viewmodel;
+package com.tyjohtech.gol.property;
 
 public interface SimpleChangeListener<V> {
     void valueChanged(V value);

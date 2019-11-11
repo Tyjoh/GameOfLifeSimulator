@@ -2,6 +2,7 @@ package com.tyjohtech.gol.viewmodel;
 
 import com.tyjohtech.gol.model.Board;
 import com.tyjohtech.gol.model.CellState;
+import com.tyjohtech.gol.property.SimpleChangeListener;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -24,7 +25,7 @@ public class EditorViewModel {
     public void onAppStateChanged(ApplicationState state) {
         if (state == ApplicationState.EDITING) {
             drawingEnabled = true;
-            this.boardViewModel.setBoard(editorBoard);
+            this.boardViewModel.getCurrentBoard().set(editorBoard);
         } else {
             drawingEnabled = false;
         }
@@ -48,7 +49,7 @@ public class EditorViewModel {
     public void boardPressed(int simX, int simY) {
         if (drawingEnabled) {
             this.editorBoard.setState(simX, simY, drawMode);
-            this.boardViewModel.setBoard(this.editorBoard);
+            this.boardViewModel.getCurrentBoard().set(editorBoard);
         }
     }
 }

@@ -1,35 +1,43 @@
 package com.tyjohtech.gol.viewmodel;
 
 import com.tyjohtech.gol.model.Board;
-
-import java.util.LinkedList;
-import java.util.List;
+import com.tyjohtech.gol.model.CellPosition;
+import com.tyjohtech.gol.model.CellRegion;
+import com.tyjohtech.gol.property.Property;
+import javafx.scene.transform.Affine;
 
 public class BoardViewModel {
 
-    private Board board;
-    private List<SimpleChangeListener<Board>> boardListeners;
+    private Property<Affine> boardViewTransform;
+
+    private Property<Board> currentBoard;
+    private Property<CellPosition> cursorPosition;
+    private Property<CellRegion> selection;
 
     public BoardViewModel() {
-        this.boardListeners = new LinkedList<>();
+        this.currentBoard = new Property<>();
+        this.cursorPosition = new Property<>();
+        this.selection = new Property<>();
+        this.boardViewTransform = new Property<>();
+
+        Affine a = new Affine();
+        a.appendScale(200 / 10f, 200 / 10f);
+        boardViewTransform.set(a);
     }
 
-    public void listenToBoard(SimpleChangeListener<Board> listener) {
-        this.boardListeners.add(listener);
+    public Property<Board> getCurrentBoard() {
+        return currentBoard;
     }
 
-    public void setBoard(Board board) {
-        this.board = board;
-        notifyBoardListeners();
+    public Property<CellPosition> getCursorPosition() {
+        return cursorPosition;
     }
 
-    private void notifyBoardListeners() {
-        for (SimpleChangeListener<Board> boardListener : boardListeners) {
-            boardListener.valueChanged(this.board);
-        }
+    public Property<CellRegion> getSelection() {
+        return selection;
     }
 
-    public Board getBoard() {
-        return board;
+    public Property<Affine> getBoardViewTransform() {
+        return boardViewTransform;
     }
 }
