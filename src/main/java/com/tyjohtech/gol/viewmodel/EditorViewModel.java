@@ -1,8 +1,9 @@
 package com.tyjohtech.gol.viewmodel;
 
-import com.tyjohtech.gol.model.Board;
-import com.tyjohtech.gol.model.CellState;
-import com.tyjohtech.gol.property.SimpleChangeListener;
+import com.tyjohtech.gol.model.board.Board;
+import com.tyjohtech.gol.model.board.CellState;
+import com.tyjohtech.gol.util.property.SimpleChangeListener;
+import com.tyjohtech.gol.view.simulation.SimulationCanvasViewModel;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -12,12 +13,12 @@ public class EditorViewModel {
     private CellState drawMode = CellState.ALIVE;
     private List<SimpleChangeListener<CellState>> drawModeListeners;
 
-    private BoardViewModel boardViewModel;
+    private SimulationCanvasViewModel simulationCanvasViewModel;
     private Board editorBoard;
     private boolean drawingEnabled = true;
 
-    public EditorViewModel(BoardViewModel boardViewModel, Board initialBoard) {
-        this.boardViewModel = boardViewModel;
+    public EditorViewModel(SimulationCanvasViewModel simulationCanvasViewModel, Board initialBoard) {
+        this.simulationCanvasViewModel = simulationCanvasViewModel;
         this.editorBoard = initialBoard;
         this.drawModeListeners = new LinkedList<>();
     }
@@ -25,7 +26,7 @@ public class EditorViewModel {
     public void onAppStateChanged(ApplicationState state) {
         if (state == ApplicationState.EDITING) {
             drawingEnabled = true;
-            this.boardViewModel.getCurrentBoard().set(editorBoard);
+            this.simulationCanvasViewModel.getCurrentBoard().set(editorBoard);
         } else {
             drawingEnabled = false;
         }
@@ -49,7 +50,7 @@ public class EditorViewModel {
     public void boardPressed(int simX, int simY) {
         if (drawingEnabled) {
             this.editorBoard.setState(simX, simY, drawMode);
-            this.boardViewModel.getCurrentBoard().set(editorBoard);
+            this.simulationCanvasViewModel.getCurrentBoard().set(editorBoard);
         }
     }
 }

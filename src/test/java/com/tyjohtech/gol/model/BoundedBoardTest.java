@@ -1,5 +1,8 @@
 package com.tyjohtech.gol.model;
 
+import com.tyjohtech.gol.model.board.Board;
+import com.tyjohtech.gol.model.board.BoundedBoard;
+import com.tyjohtech.gol.model.board.CellState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,9 +1,9 @@
 package com.tyjohtech.gol;
 
-import com.tyjohtech.gol.command.CommandProcessor;
-import com.tyjohtech.gol.editor.BoardEditor;
-import com.tyjohtech.gol.editor.BrushTool;
-import com.tyjohtech.gol.editor.PencilTool;
+import com.tyjohtech.gol.logic.editor.BoardEditor;
+import com.tyjohtech.gol.logic.editor.tool.BrushTool;
+import com.tyjohtech.gol.logic.editor.tool.PencilTool;
+import com.tyjohtech.gol.util.command.CommandProcessor;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
