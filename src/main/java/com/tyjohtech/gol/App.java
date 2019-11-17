@@ -1,13 +1,14 @@
 package com.tyjohtech.gol;
 
 import com.tyjohtech.gol.logic.editor.EditorModelFactory;
+import com.tyjohtech.gol.logic.editor.tool.ToolModelFactory;
 import com.tyjohtech.gol.model.ModelFactory;
 import com.tyjohtech.gol.model.SimulationModelFactory;
 import com.tyjohtech.gol.util.command.CommandProcessor;
 import com.tyjohtech.gol.util.command.RootCommandProcessor;
 import com.tyjohtech.gol.util.event.BasicEventBus;
 import com.tyjohtech.gol.util.event.EventBus;
-import com.tyjohtech.gol.util.property.ModelPropertyBus;
+import com.tyjohtech.gol.util.property.ModelProvider;
 import com.tyjohtech.gol.view.MainView;
 import com.tyjohtech.gol.view.ViewFactory;
 import com.tyjohtech.gol.view.infobar.InfoBarFactory;
@@ -30,16 +31,17 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         EventBus eventBus = new BasicEventBus();
-        ModelPropertyBus modelPropertyBus = new ModelPropertyBus();
+        ModelProvider modelProvider = new ModelProvider();
         CommandProcessor commandProcessor = new RootCommandProcessor();
         MainView mainView = new MainView();
 
         List<ModelFactory> modelFactories = new LinkedList<>();
         modelFactories.add(new EditorModelFactory());
+        modelFactories.add(new ToolModelFactory());
         modelFactories.add(new SimulationModelFactory());
 
         for (ModelFactory modelFactory : modelFactories) {
-            modelFactory.initialize(modelPropertyBus, eventBus, commandProcessor);
+            modelFactory.initialize(modelProvider, eventBus, commandProcessor);
         }
 
         List<ViewFactory> viewFactories = new LinkedList<>();
@@ -49,7 +51,7 @@ public class App extends Application {
         viewFactories.add(new SimulationSettingsFactory());
 
         for (ViewFactory viewFactory : viewFactories) {
-            Node node = viewFactory.buildView(modelPropertyBus, eventBus);
+            Node node = viewFactory.buildView(modelProvider, eventBus);
             switch (viewFactory.getMainViewPosition()) {
                 case TOOLBAR:
                     mainView.setTop(node);

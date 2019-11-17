@@ -1,7 +1,7 @@
 package com.tyjohtech.gol.view.settings;
 
 import com.tyjohtech.gol.util.event.EventBus;
-import com.tyjohtech.gol.util.property.ModelPropertyBus;
+import com.tyjohtech.gol.util.property.ModelProvider;
 import com.tyjohtech.gol.view.KeyValuePane;
 import com.tyjohtech.gol.view.MainViewPosition;
 import com.tyjohtech.gol.view.ViewFactory;
@@ -18,7 +18,7 @@ public class SimulationSettingsFactory implements ViewFactory {
     }
 
     @Override
-    public Node buildView(ModelPropertyBus propertyProvider, EventBus eventBus) {
+    public Node buildView(ModelProvider propertyProvider, EventBus eventBus) {
 
         KeyValuePane settingsPane = new KeyValuePane();
         settingsPane.setPrefWidth(300);

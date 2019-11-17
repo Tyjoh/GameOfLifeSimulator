@@ -1,24 +1,24 @@
 package com.tyjohtech.gol;
 
 import com.tyjohtech.gol.util.event.EventEmitter;
-import com.tyjohtech.gol.util.property.ModelPropertyBus;
+import com.tyjohtech.gol.util.property.ModelProvider;
 
 public class ViewContext {
 
     private EventEmitter eventEmitter;
-    private ModelPropertyBus modelPropertyBus;
+    private ModelProvider modelProvider;
 
 
-    public ViewContext(EventEmitter eventEmitter, ModelPropertyBus modelPropertyBus) {
+    public ViewContext(EventEmitter eventEmitter, ModelProvider modelProvider) {
         this.eventEmitter = eventEmitter;
-        this.modelPropertyBus = modelPropertyBus;
+        this.modelProvider = modelProvider;
     }
 
     public EventEmitter getEventEmitter() {
         return eventEmitter;
     }
 
-    public ModelPropertyBus getModelPropertyBus() {
-        return modelPropertyBus;
+    public ModelProvider getModelProvider() {
+        return modelProvider;
     }
 }

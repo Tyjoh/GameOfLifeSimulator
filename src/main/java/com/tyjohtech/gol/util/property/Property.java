@@ -34,10 +34,13 @@ public class Property<T> {
         return value != null;
     }
 
+    public void pump() {
+        notifyListeners();
+    }
+
     private void notifyListeners() {
         for (SimpleChangeListener<T> listener : listeners) {
             listener.valueChanged(value);
         }
     }
-
 }

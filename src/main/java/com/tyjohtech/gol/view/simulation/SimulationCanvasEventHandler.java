@@ -1,7 +1,9 @@
 package com.tyjohtech.gol.view.simulation;
 
-import com.tyjohtech.gol.logic.editor.BoardEvent;
+import com.tyjohtech.gol.logic.editor.event.CursorEvent;
+import com.tyjohtech.gol.logic.editor.event.ToolInvokeEvent;
 import com.tyjohtech.gol.model.board.CellPosition;
+import com.tyjohtech.gol.util.event.Event;
 import com.tyjohtech.gol.util.event.EventBus;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
@@ -29,26 +31,28 @@ public class SimulationCanvasEventHandler implements EventHandler<MouseEvent> {
         }
     }
 
-    private BoardEvent lastBoardEvent;
+    Event lastEvent;
+    CellPosition lastCursor;
 
     @Override
-    public void handle(MouseEvent event) {
-        CellPosition cellPosition = toCellPosition(event);
+    public void handle(MouseEvent mouseEvent) {
+        CellPosition cursorPosition = toCellPosition(mouseEvent);
+        if (!cursorPosition.equals(lastCursor)) {
+            lastCursor = cursorPosition;
+            eventBus.emit(new CursorEvent(cursorPosition));
+        }
 
-        BoardEvent boardEvent;
-        if (event.getEventType() == MouseEvent.MOUSE_MOVED) {
-            boardEvent = BoardEvent.hover(cellPosition);
-        } else if (event.getEventType() == MouseEvent.MOUSE_DRAGGED || event.getEventType() == MouseEvent.MOUSE_PRESSED) {
-            boardEvent = BoardEvent.drag(cellPosition);
-        } else if (event.getEventType() == MouseEvent.MOUSE_RELEASED) {
-            boardEvent = BoardEvent.release(cellPosition);
+        Event event;
+        if (mouseEvent.getEventType() == MouseEvent.MOUSE_DRAGGED ||
+                mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED) {
+            event = new ToolInvokeEvent(simulationCanvasViewModel.getSelectedTool().get().name(), cursorPosition);
         } else {
             return;
         }
 
-        if (!boardEvent.equals(lastBoardEvent)) {
-            lastBoardEvent = boardEvent;
-            eventBus.emit(boardEvent);
+        if (!event.equals(lastEvent)) {
+            lastEvent = event;
+            eventBus.emit(event);
         }
     }
 }

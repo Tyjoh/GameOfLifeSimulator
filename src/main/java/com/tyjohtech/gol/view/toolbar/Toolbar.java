@@ -1,6 +1,8 @@
 package com.tyjohtech.gol.view.toolbar;
 
+import com.tyjohtech.gol.logic.editor.event.DrawStateEvent;
 import com.tyjohtech.gol.model.SimulationEvent;
+import com.tyjohtech.gol.model.board.CellState;
 import com.tyjohtech.gol.util.event.EventBus;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
@@ -49,12 +51,12 @@ public class Toolbar extends ToolBar {
 
     private void handleErase(ActionEvent actionEvent) {
         System.out.println("Erase pressed");
-//        this.editorViewModel.setDrawMode(CellState.DEAD);
+        eventBus.emit(new DrawStateEvent(CellState.DEAD));
     }
 
     private void handleDraw(ActionEvent actionEvent) {
         System.out.println("Draw pressed");
-//        this.editorViewModel.setDrawMode(CellState.ALIVE);
+        eventBus.emit(new DrawStateEvent(CellState.ALIVE));
     }
 
 }

@@ -1,8 +1,6 @@
 package com.tyjohtech.gol;
 
 import com.tyjohtech.gol.logic.editor.BoardEditor;
-import com.tyjohtech.gol.logic.editor.tool.BrushTool;
-import com.tyjohtech.gol.logic.editor.tool.PencilTool;
 import com.tyjohtech.gol.util.command.CommandProcessor;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
@@ -32,14 +30,14 @@ public class ToolSelectHandler implements EventHandler<KeyEvent> {
             return;
         }
 
-        if (event.getCode() == KeyCode.P) {
-            editor.getTool().set(new PencilTool(commandProcessor));
-            System.out.println("Pencil selected");
-        } else if (event.getCode() == KeyCode.B) {
-            editor.getTool().set(new BrushTool(commandProcessor));
-            System.out.println("Brush selected");
-        } else if (event.getCode() == KeyCode.Z && commandDown) {
-            commandProcessor.undo();
-        }
+//        if (event.getCode() == KeyCode.P) {
+//            editor.getTool().set(new PencilTool(commandProcessor));
+//            System.out.println("Pencil selected");
+//        } else if (event.getCode() == KeyCode.B) {
+//            editor.getTool().set(new BrushTool(commandProcessor));
+//            System.out.println("Brush selected");
+//        } else if (event.getCode() == KeyCode.Z && commandDown) {
+//            commandProcessor.undo();
+//        }
     }
 }

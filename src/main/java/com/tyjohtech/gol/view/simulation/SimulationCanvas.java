@@ -1,9 +1,7 @@
 package com.tyjohtech.gol.view.simulation;
 
-import com.tyjohtech.gol.model.board.Board;
-import com.tyjohtech.gol.model.board.CellPosition;
-import com.tyjohtech.gol.model.board.CellRegion;
-import com.tyjohtech.gol.model.board.CellState;
+import com.tyjohtech.gol.logic.editor.tool.EditorTool;
+import com.tyjohtech.gol.model.board.*;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
@@ -21,6 +19,7 @@ public class SimulationCanvas extends Pane {
         this.simulationCanvasViewModel.getCursorPosition().listen(value -> draw());
         this.simulationCanvasViewModel.getBoardViewTransform().listen(value -> draw());
         this.simulationCanvasViewModel.getSelection().listen(value -> draw());
+        this.simulationCanvasViewModel.getSelectedTool().listen(value -> draw());
 
         this.canvas = new Canvas(400, 400);
 
@@ -51,6 +50,13 @@ public class SimulationCanvas extends Pane {
             this.drawSelection(simulationCanvasViewModel.getSelection().get());
         }
 
+        if (simulationCanvasViewModel.getSelectedTool().isPresent()) {
+            EditorTool tool = simulationCanvasViewModel.getSelectedTool().get();
+            if (tool.getAreaOfEffect().isPresent()) {
+                drawAreaEffect(tool);
+            }
+        }
+
         if (simulationCanvasViewModel.getCursorPosition().isPresent()) {
             this.drawCursor(simulationCanvasViewModel.getCursorPosition().get());
         }
@@ -79,7 +85,7 @@ public class SimulationCanvas extends Pane {
         }
     }
 
-    private void drawSelection(CellRegion region) {
+    private void drawSelection(BoardRegion region) {
         GraphicsContext g = this.canvas.getGraphicsContext2D();
         g.setFill(new Color(0.1, 0.1, 0.1, 0.1));
         for (int x = region.getTopLeft().getX(); x <= region.getBottomRight().getX(); x++) {
@@ -87,6 +93,22 @@ public class SimulationCanvas extends Pane {
                 g.fillRect(x, y, 1, 1);
             }
         }
+    }
+
+    private void drawAreaEffect(EditorTool tool) {
+        GraphicsContext g = this.canvas.getGraphicsContext2D();
+
+        g.setFill(new Color(0.1, 0.1, 0.1, 0.1));
+        tool.getAreaOfEffect().get().iterate((x, y, rx, ry) -> {
+            if (tool.getMask().isPresent()) {
+                BoardMask boardMask = tool.getMask().get();
+                if (boardMask.isSet(rx, ry)) {
+                    g.fillRect(x, y, 1, 1);
+                }
+            } else {
+                g.fillRect(x, y, 1, 1);
+            }
+        });
     }
 
     private void drawCursor(CellPosition position) {
