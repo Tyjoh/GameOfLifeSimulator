@@ -1,28 +1,19 @@
 package com.tyjohtech.gol.logic.editor.tool;
 
-import com.tyjohtech.gol.model.board.*;
+import com.tyjohtech.gol.logic.editor.EditorState;
+import com.tyjohtech.gol.model.board.Board;
+import com.tyjohtech.gol.model.board.BoardRegion;
+import com.tyjohtech.gol.model.board.CellPosition;
+import com.tyjohtech.gol.model.board.CellState;
 import com.tyjohtech.gol.util.command.Command;
 import com.tyjohtech.gol.util.property.Property;
 
 public class PencilTool implements EditorTool {
 
-    private Property<BoardRegion> areaOfEffect = new Property<>();
-    private Property<BoardMask> boardMask = new Property<>();
-    private Property<Board> board;
-    private Property<CellState> drawState;
+    private EditorState editorState;
 
-    public PencilTool(Property<Board> board, Property<CellPosition> cursorPosition, Property<CellState> drawState) {
-        this.board = board;
-        this.drawState = drawState;
-
-        this.boardMask.set(new BoardMask(1, 1));
-        this.boardMask.get().set(0, 0, true);
-
-        cursorPosition.listen(this::cursorPositionChanged);
-    }
-
-    private void cursorPositionChanged(CellPosition cursorPosition) {
-        this.areaOfEffect.set(new BoardRegion(cursorPosition, cursorPosition));
+    public PencilTool(EditorState editorState) {
+        this.editorState = editorState;
     }
 
     @Override
@@ -30,19 +21,15 @@ public class PencilTool implements EditorTool {
         return getClass().getSimpleName();
     }
 
-    @Override
-    public Property<BoardMask> getMask() {
-        return boardMask;
-    }
-
-    @Override
-    public Property<BoardRegion> getAreaOfEffect() {
-        return areaOfEffect;
+    public BoardRegion getToolRegion() {
+        CellPosition cursorPosition = editorState.getCursor().get();
+        return new BoardRegion(cursorPosition, cursorPosition);
     }
 
     @Override
     public Command createCommand() {
-        return new PencilCommand(board, areaOfEffect.get().getTopLeft(), drawState.get());
+        CellPosition cursorPosition = editorState.getCursor().get();
+        return new PencilCommand(editorState.getBoard(), cursorPosition, editorState.getDrawState().get());
     }
 
     private static class PencilCommand implements Command {

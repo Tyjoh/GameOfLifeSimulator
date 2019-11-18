@@ -1,6 +1,6 @@
 package com.tyjohtech.gol;
 
-import com.tyjohtech.gol.logic.editor.BoardEditor;
+import com.tyjohtech.gol.logic.editor.EditorState;
 import com.tyjohtech.gol.util.command.CommandProcessor;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
@@ -8,11 +8,11 @@ import javafx.scene.input.KeyEvent;
 
 public class ToolSelectHandler implements EventHandler<KeyEvent> {
 
-    private BoardEditor editor;
+    private EditorState editor;
     private CommandProcessor commandProcessor;
     private boolean commandDown = false;
 
-    public ToolSelectHandler(BoardEditor editor, CommandProcessor commandProcessor) {
+    public ToolSelectHandler(EditorState editor, CommandProcessor commandProcessor) {
         this.editor = editor;
         this.commandProcessor = commandProcessor;
     }

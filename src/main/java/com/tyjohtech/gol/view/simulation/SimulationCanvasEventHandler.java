@@ -45,7 +45,7 @@ public class SimulationCanvasEventHandler implements EventHandler<MouseEvent> {
         Event event;
         if (mouseEvent.getEventType() == MouseEvent.MOUSE_DRAGGED ||
                 mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED) {
-            event = new ToolInvokeEvent(simulationCanvasViewModel.getSelectedTool().get().name(), cursorPosition);
+            event = new ToolInvokeEvent(simulationCanvasViewModel.getActiveTool().get(), cursorPosition);
         } else {
             return;
         }

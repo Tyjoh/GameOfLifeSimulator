@@ -1,6 +1,6 @@
 package com.tyjohtech.gol.model;
 
-import com.tyjohtech.gol.logic.editor.BoardEditor;
+import com.tyjohtech.gol.logic.editor.EditorState;
 import com.tyjohtech.gol.util.command.CommandProcessor;
 import com.tyjohtech.gol.util.event.EventBus;
 import com.tyjohtech.gol.util.property.ModelProvider;
@@ -14,7 +14,7 @@ public class SimulationModelFactory implements ModelFactory {
 
         eventBus.listenFor(SimulationEvent.class, simulator::handle);
 
-        BoardEditor editorBoard = modelProvider.get(BoardEditor.class);
+        EditorState editorBoard = modelProvider.get(EditorState.class);
         simulator.getInitialBoard().bindTo(editorBoard.getBoard());
 
     }

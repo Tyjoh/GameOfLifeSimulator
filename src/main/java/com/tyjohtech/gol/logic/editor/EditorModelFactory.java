@@ -14,16 +14,20 @@ public class EditorModelFactory implements ModelFactory {
 
     @Override
     public void initialize(ModelProvider propertyBus, EventBus eventBus, CommandProcessor commandProcessor) {
-        EditorToolRegistry editorToolRegistry = new EditorToolRegistry();
-        propertyBus.publish(EditorToolRegistry.class, editorToolRegistry);
+        EditorToolRegistry toolRegistry = new EditorToolRegistry();
+        propertyBus.publish(EditorToolRegistry.class, toolRegistry);
 
-        BoardEditor boardEditor = new BoardEditor(editorToolRegistry, commandProcessor);
-        propertyBus.publish(BoardEditor.class, boardEditor);
-        eventBus.listenFor(CursorEvent.class, boardEditor::handle);
-        eventBus.listenFor(DrawStateEvent.class, boardEditor::handle);
-        eventBus.listenFor(ToolInvokeEvent.class, boardEditor::handle);
+        EditorState editorState = new EditorState();
+        propertyBus.publish(EditorState.class, editorState);
 
-        boardEditor.getBoard().set(new BoundedBoard(45, 37));
-        boardEditor.getDrawState().set(CellState.ALIVE);
+        EditorEventHandler eventHandler = new EditorEventHandler(toolRegistry, editorState, commandProcessor);
+        propertyBus.publish(EditorEventHandler.class, eventHandler);
+
+        eventBus.listenFor(CursorEvent.class, eventHandler::handle);
+        eventBus.listenFor(DrawStateEvent.class, eventHandler::handle);
+        eventBus.listenFor(ToolInvokeEvent.class, eventHandler::handle);
+
+        editorState.getBoard().set(new BoundedBoard(45, 37));
+        editorState.getDrawState().set(CellState.ALIVE);
     }
 }

@@ -1,32 +1,25 @@
 package com.tyjohtech.gol.logic.editor.tool;
 
 import com.tyjohtech.gol.logic.editor.BrushCommand;
-import com.tyjohtech.gol.model.board.*;
+import com.tyjohtech.gol.logic.editor.EditorState;
+import com.tyjohtech.gol.model.board.BoardMask;
+import com.tyjohtech.gol.model.board.BoardRegion;
+import com.tyjohtech.gol.model.board.CellPosition;
 import com.tyjohtech.gol.util.command.Command;
 import com.tyjohtech.gol.util.property.Property;
 
 public class BrushTool implements EditorTool {
 
-    private Property<BoardMask> boardMask = new Property<>();
     private Property<Integer> brushSize = new Property<>();
-    private Property<BoardRegion> areaOfEffect = new Property<>();
-    private Property<Board> board;
-    private Property<CellPosition> cursorPosition;
-    private Property<CellState> drawState;
+    private EditorState editorState;
 
-    public BrushTool(Property<Board> board, Property<CellPosition> cursorPosition, Property<CellState> drawState) {
-        this.board = board;
-        this.cursorPosition = cursorPosition;
-        this.drawState = drawState;
-
-        cursorPosition.listen(this::updateCursorPosition);
+    public BrushTool(EditorState editorState) {
+        this.editorState = editorState;
         this.brushSize.set(5);
-        updateMask();
     }
 
     public void handle(BrushConfigEvent brushConfigEvent) {
         this.brushSize.set(brushConfigEvent.getBrushSize());
-        updateMask();
     }
 
     @Override
@@ -34,48 +27,45 @@ public class BrushTool implements EditorTool {
         return this.getClass().getSimpleName();
     }
 
-    @Override
-    public Property<BoardMask> getMask() {
-        return boardMask;
-    }
-
-    @Override
-    public Property<BoardRegion> getAreaOfEffect() {
-        return areaOfEffect;
-    }
-
-    private void updateMask() {
-        BoardMask mask = new BoardMask(5, 5);
+    public BoardMask getToolMask() {
         int diam = brushSize.get();
         int r = diam / 2;
+        BoardMask mask = new BoardMask(diam, diam);
 
-        for (int x = 0; x < diam; x++) {
+        for (int x = 0; x <= diam; x++) {
             int dx = Math.abs(r - x);
-            for (int y = 0; y < diam; y++) {
+            for (int y = 0; y <= diam; y++) {
                 int dy = Math.abs(r - y);
-                int dist = dx + dy;
-                if (dist <= r) {
+                double dist = Math.sqrt((dx * dx) + (dy * dy));
+                if (dist <= r + 0.25) {
                     mask.set(x, y, true);
                 }
             }
         }
-
-        this.boardMask.set(mask);
-        if (cursorPosition.isPresent()) {
-            updateCursorPosition(this.cursorPosition.get());
-        }
+        return mask;
     }
 
-    private void updateCursorPosition(CellPosition cursorPosition) {
+    public BoardRegion getToolRegion() {
+        CellPosition cursorPosition = editorState.getCursor().get();
         int diam = brushSize.get();
         int radius = diam / 2;
+
         CellPosition topLeft = CellPosition.of(cursorPosition.getX() - radius, cursorPosition.getY() - radius);
-        CellPosition bottomRight = CellPosition.of(cursorPosition.getX() + radius, cursorPosition.getY() + radius);
-        areaOfEffect.set(new BoardRegion(topLeft, bottomRight));
+        CellPosition bottomRight = CellPosition.of(topLeft.getX() + diam, topLeft.getY() + diam);
+
+        return new BoardRegion(topLeft, bottomRight);
     }
 
-    @Override
+    public boolean isVisible() {
+        return editorState.getCursor().isPresent();
+    }
+
     public Command createCommand() {
-        return new BrushCommand(board, areaOfEffect.get(), drawState.get(), boardMask.get());
+        return new BrushCommand(
+                editorState.getBoard(),
+                getToolRegion(),
+                editorState.getDrawState().get(),
+                getToolMask()
+        );
     }
 }

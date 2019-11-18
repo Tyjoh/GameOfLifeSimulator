@@ -1,25 +1,31 @@
 package com.tyjohtech.gol.view.simulation;
 
-import com.tyjohtech.gol.logic.editor.tool.EditorTool;
-import com.tyjohtech.gol.model.board.*;
+import com.tyjohtech.gol.model.board.Board;
+import com.tyjohtech.gol.model.board.BoardRegion;
+import com.tyjohtech.gol.model.board.CellPosition;
+import com.tyjohtech.gol.model.board.CellState;
+import com.tyjohtech.gol.view.simulation.tool.EditorToolRenderer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
+import java.util.Map;
+
 public class SimulationCanvas extends Pane {
 
     private Canvas canvas;
-    private SimulationCanvasViewModel simulationCanvasViewModel;
+    private Map<String, EditorToolRenderer> toolRenderers;
+    private SimulationCanvasViewModel viewModel;
 
-    public SimulationCanvas(SimulationCanvasViewModel simulationCanvasViewModel) {
-        this.simulationCanvasViewModel = simulationCanvasViewModel;
+    public SimulationCanvas(Map<String, EditorToolRenderer> toolRenderers, SimulationCanvasViewModel viewModel) {
+        this.toolRenderers = toolRenderers;
+        this.viewModel = viewModel;
 
-        this.simulationCanvasViewModel.getCurrentBoard().listen(value -> draw());
-        this.simulationCanvasViewModel.getCursorPosition().listen(value -> draw());
-        this.simulationCanvasViewModel.getBoardViewTransform().listen(value -> draw());
-        this.simulationCanvasViewModel.getSelection().listen(value -> draw());
-        this.simulationCanvasViewModel.getSelectedTool().listen(value -> draw());
+        this.viewModel.getBoardViewTransform().listen(value -> draw());
+        this.viewModel.getCursorPosition().listen(value -> draw());
+        this.viewModel.getActiveTool().listen(value -> draw());
+        this.viewModel.getBoard().listen(value -> draw());
 
         this.canvas = new Canvas(400, 400);
 
@@ -36,29 +42,22 @@ public class SimulationCanvas extends Pane {
     }
 
     private void draw() {
-        Board board = simulationCanvasViewModel.getCurrentBoard().get();
+        Board board = viewModel.getBoard().get();
 
         GraphicsContext g = this.canvas.getGraphicsContext2D();
-        g.setTransform(simulationCanvasViewModel.getBoardViewTransform().get());
+        g.setTransform(viewModel.getBoardViewTransform().get());
 
         g.setFill(Color.LIGHTGRAY);
         g.fillRect(0, 0, 450, 450);
 
         this.drawSimulation(board);
 
-        if (simulationCanvasViewModel.getSelection().isPresent()) {
-            this.drawSelection(simulationCanvasViewModel.getSelection().get());
-        }
+        String activeTool = this.viewModel.getActiveTool().get();
+        EditorToolRenderer toolRenderer = this.toolRenderers.get(activeTool);
+        toolRenderer.render(g);
 
-        if (simulationCanvasViewModel.getSelectedTool().isPresent()) {
-            EditorTool tool = simulationCanvasViewModel.getSelectedTool().get();
-            if (tool.getAreaOfEffect().isPresent()) {
-                drawAreaEffect(tool);
-            }
-        }
-
-        if (simulationCanvasViewModel.getCursorPosition().isPresent()) {
-            this.drawCursor(simulationCanvasViewModel.getCursorPosition().get());
+        if (viewModel.getCursorPosition().isPresent()) {
+            this.drawCursor(viewModel.getCursorPosition().get());
         }
 
         g.setStroke(Color.GRAY);
@@ -75,7 +74,7 @@ public class SimulationCanvas extends Pane {
 
     private void drawSimulation(Board simulationToDraw) {
         GraphicsContext g = this.canvas.getGraphicsContext2D();
-        g.setFill(Color.BLACK);
+        g.setFill(new Color(0.08, 0.08, 0.08, 1));
         for (int x = 0; x < simulationToDraw.getWidth(); x++) {
             for (int y = 0; y < simulationToDraw.getHeight(); y++) {
                 if (simulationToDraw.getState(x, y) == CellState.ALIVE) {
@@ -95,25 +94,9 @@ public class SimulationCanvas extends Pane {
         }
     }
 
-    private void drawAreaEffect(EditorTool tool) {
-        GraphicsContext g = this.canvas.getGraphicsContext2D();
-
-        g.setFill(new Color(0.1, 0.1, 0.1, 0.1));
-        tool.getAreaOfEffect().get().iterate((x, y, rx, ry) -> {
-            if (tool.getMask().isPresent()) {
-                BoardMask boardMask = tool.getMask().get();
-                if (boardMask.isSet(rx, ry)) {
-                    g.fillRect(x, y, 1, 1);
-                }
-            } else {
-                g.fillRect(x, y, 1, 1);
-            }
-        });
-    }
-
     private void drawCursor(CellPosition position) {
         GraphicsContext g = this.canvas.getGraphicsContext2D();
-        g.setFill(new Color(0.1, 0.1, 0.1, 0.1));
+        g.setFill(new Color(0.3, 0.3, 0.3, 0.4));
         g.fillRect(position.getX(), position.getY(), 1, 1);
     }
 }
