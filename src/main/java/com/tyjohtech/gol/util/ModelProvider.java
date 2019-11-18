@@ -1,4 +1,4 @@
-package com.tyjohtech.gol.util.property;
+package com.tyjohtech.gol.util;
 
 import java.util.HashMap;
 import java.util.Map;

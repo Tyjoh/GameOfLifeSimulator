@@ -1,7 +1,7 @@
 package com.tyjohtech.gol;
 
+import com.tyjohtech.gol.util.ModelProvider;
 import com.tyjohtech.gol.util.event.EventEmitter;
-import com.tyjohtech.gol.util.property.ModelProvider;
 
 public class ViewContext {
 

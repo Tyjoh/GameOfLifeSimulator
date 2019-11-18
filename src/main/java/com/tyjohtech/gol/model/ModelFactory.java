@@ -1,8 +1,8 @@
 package com.tyjohtech.gol.model;
 
+import com.tyjohtech.gol.util.ModelProvider;
 import com.tyjohtech.gol.util.command.CommandProcessor;
 import com.tyjohtech.gol.util.event.EventBus;
-import com.tyjohtech.gol.util.property.ModelProvider;
 
 public interface ModelFactory {
 

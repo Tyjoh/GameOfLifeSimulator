@@ -1,4 +1,4 @@
-package com.tyjohtech.gol.logic.editor;
+package com.tyjohtech.gol.logic.editor.tool;
 
 import com.tyjohtech.gol.model.board.*;
 import com.tyjohtech.gol.util.command.Command;

@@ -1,6 +1,5 @@
-package com.tyjohtech.gol.logic.editor;
+package com.tyjohtech.gol.logic.editor.tool;
 
-import com.tyjohtech.gol.logic.editor.tool.EditorTool;
 import com.tyjohtech.gol.util.property.Property;
 
 import java.util.HashMap;

@@ -1,7 +1,7 @@
 package com.tyjohtech.gol.view.settings;
 
+import com.tyjohtech.gol.util.ModelProvider;
 import com.tyjohtech.gol.util.event.EventBus;
-import com.tyjohtech.gol.util.property.ModelProvider;
 import com.tyjohtech.gol.view.KeyValuePane;
 import com.tyjohtech.gol.view.MainViewPosition;
 import com.tyjohtech.gol.view.ViewFactory;

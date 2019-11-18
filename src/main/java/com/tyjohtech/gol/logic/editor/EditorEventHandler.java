@@ -5,6 +5,7 @@ import com.tyjohtech.gol.logic.editor.event.DrawStateEvent;
 import com.tyjohtech.gol.logic.editor.event.ToolInvokeEvent;
 import com.tyjohtech.gol.logic.editor.event.ToolSelectEvent;
 import com.tyjohtech.gol.logic.editor.tool.EditorTool;
+import com.tyjohtech.gol.logic.editor.tool.EditorToolRegistry;
 import com.tyjohtech.gol.util.command.Command;
 import com.tyjohtech.gol.util.command.CommandProcessor;
 

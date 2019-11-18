@@ -1,6 +1,5 @@
 package com.tyjohtech.gol.logic.editor.tool;
 
-import com.tyjohtech.gol.logic.editor.BrushCommand;
 import com.tyjohtech.gol.logic.editor.EditorState;
 import com.tyjohtech.gol.model.board.BoardMask;
 import com.tyjohtech.gol.model.board.BoardRegion;
