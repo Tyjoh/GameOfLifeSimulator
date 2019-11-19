@@ -18,7 +18,7 @@ public class SimulationModelFactory implements ModelFactory {
         modelProvider.publish(Simulator.class, simulator);
         simulator.getInitialBoard().bindTo(editorBoard.getBoard());
 
-        SimulatorEventHandler simulatorEventHandler = new SimulatorEventHandler(simulator);
+        SimulatorEventHandler simulatorEventHandler = new SimulatorEventHandler(simulator, eventBus);
         eventBus.listenFor(SimulatorEvent.class, simulatorEventHandler::handle);
 
 

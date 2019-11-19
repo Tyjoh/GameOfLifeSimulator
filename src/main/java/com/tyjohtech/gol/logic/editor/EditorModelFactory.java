@@ -33,10 +33,10 @@ public class EditorModelFactory implements ModelFactory {
         EditorEventHandler eventHandler = new EditorEventHandler(toolRegistry, editorState, commandProcessor);
         propertyBus.publish(EditorEventHandler.class, eventHandler);
 
-        eventBus.listenFor(CursorEvent.class, eventHandler::handle);
-        eventBus.listenFor(DrawStateEvent.class, eventHandler::handle);
+        rootEventBus.listenFor(CursorEvent.class, eventHandler::handle);
+        rootEventBus.listenFor(DrawStateEvent.class, eventHandler::handle);
         eventBus.listenFor(ToolInvokeEvent.class, eventHandler::handle);
-        eventBus.listenFor(ToolSelectEvent.class, eventHandler::handle);
+        rootEventBus.listenFor(ToolSelectEvent.class, eventHandler::handle);
 
         editorState.getBoard().set(new BoundedBoard(45, 37));
         editorState.getDrawState().set(CellState.ALIVE);
