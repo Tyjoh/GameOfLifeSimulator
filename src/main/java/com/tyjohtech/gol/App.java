@@ -2,8 +2,9 @@ package com.tyjohtech.gol;
 
 import com.tyjohtech.gol.logic.editor.EditorModelFactory;
 import com.tyjohtech.gol.logic.editor.tool.ToolModelFactory;
+import com.tyjohtech.gol.logic.simulator.SimulationModelFactory;
+import com.tyjohtech.gol.logic.state.AppStateModelFactory;
 import com.tyjohtech.gol.model.ModelFactory;
-import com.tyjohtech.gol.model.SimulationModelFactory;
 import com.tyjohtech.gol.util.ModelProvider;
 import com.tyjohtech.gol.util.command.CommandProcessor;
 import com.tyjohtech.gol.util.command.RootCommandProcessor;
@@ -18,6 +19,7 @@ import com.tyjohtech.gol.view.toolbar.ToolbarFactory;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import java.util.LinkedList;
@@ -34,8 +36,10 @@ public class App extends Application {
         ModelProvider modelProvider = new ModelProvider();
         CommandProcessor commandProcessor = new RootCommandProcessor();
         MainView mainView = new MainView();
+        mainView.addEventHandler(KeyEvent.ANY, new ToolSelectHandler(eventBus, commandProcessor));
 
         List<ModelFactory> modelFactories = new LinkedList<>();
+        modelFactories.add(new AppStateModelFactory());
         modelFactories.add(new EditorModelFactory());
         modelFactories.add(new ToolModelFactory());
         modelFactories.add(new SimulationModelFactory());

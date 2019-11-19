@@ -19,24 +19,10 @@ public class Simulator {
     private double simulationSpeed = 1;
     private int iterationCount = -1;
 
-    public Simulator() {
-    }
-
-    public void handle(SimulationEvent event) {
-        switch (event.getType()) {
-            case START:
-                start();
-                break;
-            case STOP:
-                stop();
-                break;
-            case STEP:
-                doStep();
-                break;
-            case RESET:
-                reset();
-                break;
-        }
+    public Simulator(Property<Board> initialBoard) {
+        this.initialBoard.bindTo(initialBoard);
+        this.simulation = new Simulation(initialBoard.get(), new StandardRule());
+        this.currentBoard.set(this.simulation.getBoard());
     }
 
     public void doStep() {
@@ -55,7 +41,7 @@ public class Simulator {
         this.timeline.stop();
     }
 
-    private void reset() {
+    public void reset() {
         stop();
         this.simulation = new Simulation(initialBoard.get(), new StandardRule());
         this.currentBoard.set(this.simulation.getBoard());

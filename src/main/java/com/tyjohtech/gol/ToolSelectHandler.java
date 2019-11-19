@@ -1,19 +1,23 @@
 package com.tyjohtech.gol;
 
-import com.tyjohtech.gol.logic.editor.EditorState;
+import com.tyjohtech.gol.logic.editor.event.ToolSelectEvent;
+import com.tyjohtech.gol.logic.editor.tool.BrushConfigEvent;
 import com.tyjohtech.gol.util.command.CommandProcessor;
+import com.tyjohtech.gol.util.event.EventBus;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 public class ToolSelectHandler implements EventHandler<KeyEvent> {
 
-    private EditorState editor;
     private CommandProcessor commandProcessor;
     private boolean commandDown = false;
+    private EventBus eventBus;
 
-    public ToolSelectHandler(EditorState editor, CommandProcessor commandProcessor) {
-        this.editor = editor;
+    private int brushSize = 5;
+
+    public ToolSelectHandler(EventBus eventBus, CommandProcessor commandProcessor) {
+        this.eventBus = eventBus;
         this.commandProcessor = commandProcessor;
     }
 
@@ -30,14 +34,20 @@ public class ToolSelectHandler implements EventHandler<KeyEvent> {
             return;
         }
 
-//        if (event.getCode() == KeyCode.P) {
-//            editor.getTool().set(new PencilTool(commandProcessor));
-//            System.out.println("Pencil selected");
-//        } else if (event.getCode() == KeyCode.B) {
-//            editor.getTool().set(new BrushTool(commandProcessor));
-//            System.out.println("Brush selected");
-//        } else if (event.getCode() == KeyCode.Z && commandDown) {
-//            commandProcessor.undo();
-//        }
+        if (event.getCode() == KeyCode.P) {
+            eventBus.emit(new ToolSelectEvent("PencilTool"));
+            System.out.println("Pencil selected");
+        } else if (event.getCode() == KeyCode.B) {
+            eventBus.emit(new ToolSelectEvent("BrushTool"));
+            System.out.println("Brush selected");
+        } else if (event.getCode() == KeyCode.OPEN_BRACKET) {
+            brushSize -= 2;
+            eventBus.emit(new BrushConfigEvent(brushSize));
+        } else if (event.getCode() == KeyCode.CLOSE_BRACKET) {
+            brushSize += 2;
+            eventBus.emit(new BrushConfigEvent(brushSize));
+        } else if (event.getCode() == KeyCode.Z && commandDown) {
+            commandProcessor.undo();
+        }
     }
 }

@@ -1,7 +1,7 @@
 package com.tyjohtech.gol.view.toolbar;
 
 import com.tyjohtech.gol.logic.editor.event.DrawStateEvent;
-import com.tyjohtech.gol.model.SimulationEvent;
+import com.tyjohtech.gol.model.SimulatorEvent;
 import com.tyjohtech.gol.model.board.CellState;
 import com.tyjohtech.gol.util.event.EventBus;
 import javafx.event.ActionEvent;
@@ -33,20 +33,20 @@ public class Toolbar extends ToolBar {
     }
 
     private void handleStop(ActionEvent actionEvent) {
-        eventBus.emit(SimulationEvent.stop());
+        eventBus.emit(SimulatorEvent.stop());
     }
 
     private void handleStart(ActionEvent actionEvent) {
-        eventBus.emit(SimulationEvent.start());
+        eventBus.emit(SimulatorEvent.start());
 
     }
 
     private void handleReset(ActionEvent actionEvent) {
-        eventBus.emit(SimulationEvent.reset());
+        eventBus.emit(SimulatorEvent.reset());
     }
 
     private void handleStep(ActionEvent actionEvent) {
-        eventBus.emit(SimulationEvent.step());
+        eventBus.emit(SimulatorEvent.step());
     }
 
     private void handleErase(ActionEvent actionEvent) {

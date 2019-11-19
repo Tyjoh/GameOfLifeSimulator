@@ -3,6 +3,7 @@ package com.tyjohtech.gol.view.simulation;
 import com.tyjohtech.gol.logic.editor.EditorState;
 import com.tyjohtech.gol.logic.editor.tool.BrushTool;
 import com.tyjohtech.gol.logic.editor.tool.PencilTool;
+import com.tyjohtech.gol.model.Simulator;
 import com.tyjohtech.gol.util.ModelProvider;
 import com.tyjohtech.gol.util.event.EventBus;
 import com.tyjohtech.gol.view.MainViewPosition;
@@ -35,7 +36,10 @@ public class SimulationCanvasFactory implements ViewFactory {
         BrushTool brushTool = propertyProvider.get(BrushTool.class);
         toolRenderers.put(brushTool.name(), new BrushRenderer(brushTool));
 
+        Simulator simulator = propertyProvider.get(Simulator.class);
+
         SimulationCanvasViewModel viewModel = new SimulationCanvasViewModel();
+        viewModel.getBoard().bindTo(simulator.getCurrentBoard());
         viewModel.getBoard().bindTo(editorState.getBoard());
         viewModel.getCursorPosition().bindTo(editorState.getCursor());
         viewModel.getActiveTool().bindTo(editorState.getSelectedTool());
