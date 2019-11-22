@@ -2,7 +2,7 @@ package com.tyjohtech.gol.logic.editor;
 
 import com.tyjohtech.gol.logic.editor.event.CursorEvent;
 import com.tyjohtech.gol.logic.editor.event.DrawStateEvent;
-import com.tyjohtech.gol.logic.editor.event.ToolInvokeEvent;
+import com.tyjohtech.gol.logic.editor.event.ToolActionEvent;
 import com.tyjohtech.gol.logic.editor.event.ToolSelectEvent;
 import com.tyjohtech.gol.logic.editor.tool.EditorToolRegistry;
 import com.tyjohtech.gol.logic.state.AppState;
@@ -30,12 +30,12 @@ public class EditorModelFactory implements ModelFactory {
         EditorState editorState = new EditorState();
         propertyBus.publish(EditorState.class, editorState);
 
-        EditorEventHandler eventHandler = new EditorEventHandler(toolRegistry, editorState, commandProcessor);
+        EditorEventHandler eventHandler = new EditorEventHandler(toolRegistry, editorState);
         propertyBus.publish(EditorEventHandler.class, eventHandler);
 
         rootEventBus.listenFor(CursorEvent.class, eventHandler::handle);
         rootEventBus.listenFor(DrawStateEvent.class, eventHandler::handle);
-        eventBus.listenFor(ToolInvokeEvent.class, eventHandler::handle);
+        eventBus.listenFor(ToolActionEvent.class, eventHandler::handle);
         rootEventBus.listenFor(ToolSelectEvent.class, eventHandler::handle);
 
         editorState.getBoard().set(new BoundedBoard(45, 37));

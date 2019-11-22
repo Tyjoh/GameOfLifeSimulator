@@ -40,6 +40,11 @@ public class ToolSelectHandler implements EventHandler<KeyEvent> {
         } else if (event.getCode() == KeyCode.B) {
             eventBus.emit(new ToolSelectEvent("BrushTool"));
             System.out.println("Brush selected");
+
+        } else if (event.getCode() == KeyCode.S) {
+            eventBus.emit(new ToolSelectEvent("SelectionTool"));
+            System.out.println("Selection tool selected");
+
         } else if (event.getCode() == KeyCode.OPEN_BRACKET) {
             brushSize -= 2;
             eventBus.emit(new BrushConfigEvent(brushSize));

@@ -1,11 +1,11 @@
 package com.tyjohtech.gol.logic.editor.tool;
 
-import com.tyjohtech.gol.util.command.Command;
+import com.tyjohtech.gol.logic.editor.event.ToolActionEvent;
 
 public interface EditorTool {
 
     String name();
 
-    Command createCommand();
+    void handle(ToolActionEvent actionEvent);
 
 }

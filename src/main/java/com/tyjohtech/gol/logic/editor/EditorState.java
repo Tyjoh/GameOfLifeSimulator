@@ -1,6 +1,9 @@
 package com.tyjohtech.gol.logic.editor;
 
-import com.tyjohtech.gol.model.board.*;
+import com.tyjohtech.gol.model.board.Board;
+import com.tyjohtech.gol.model.board.BoardRegion;
+import com.tyjohtech.gol.model.board.CellPosition;
+import com.tyjohtech.gol.model.board.CellState;
 import com.tyjohtech.gol.util.property.Property;
 
 public class EditorState extends Property<EditorState> {
@@ -9,8 +12,6 @@ public class EditorState extends Property<EditorState> {
     private Property<BoardRegion> selection = new Property<>();
     private Property<Board> board = new Property<>();
     private Property<CellState> drawState = new Property<>();
-    private Property<BoardRegion> toolAreaOfEffect = new Property<>();
-    private Property<BoardMask> toolMask = new Property<>();
     private Property<String> selectedTool = new Property<>();
 
     public EditorState() {
@@ -19,8 +20,6 @@ public class EditorState extends Property<EditorState> {
         selection.listen(value -> pump());
         board.listen(value -> pump());
         drawState.listen(value -> pump());
-        toolAreaOfEffect.listen(value -> pump());
-        toolMask.listen(value -> pump());
         selectedTool.listen(value -> pump());
     }
 
@@ -40,15 +39,8 @@ public class EditorState extends Property<EditorState> {
         return drawState;
     }
 
-    public Property<BoardRegion> getToolAreaOfEffect() {
-        return toolAreaOfEffect;
-    }
-
-    public Property<BoardMask> getToolMask() {
-        return toolMask;
-    }
-
     public Property<String> getSelectedTool() {
         return selectedTool;
     }
+
 }

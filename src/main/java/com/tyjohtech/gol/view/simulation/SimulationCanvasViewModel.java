@@ -1,6 +1,7 @@
 package com.tyjohtech.gol.view.simulation;
 
 import com.tyjohtech.gol.model.board.Board;
+import com.tyjohtech.gol.model.board.BoardRegion;
 import com.tyjohtech.gol.model.board.CellPosition;
 import com.tyjohtech.gol.util.property.Property;
 import javafx.scene.transform.Affine;
@@ -11,6 +12,7 @@ public class SimulationCanvasViewModel {
     private Property<Board> board = new Property<>();
     private Property<String> activeTool = new Property<>();
     private Property<CellPosition> cursorPosition = new Property<>();
+    private Property<BoardRegion> selection = new Property<>();
 
     public SimulationCanvasViewModel() {
         this.boardViewTransform = new Property<>();
@@ -34,5 +36,9 @@ public class SimulationCanvasViewModel {
 
     public Property<CellPosition> getCursorPosition() {
         return cursorPosition;
+    }
+
+    public Property<BoardRegion> getSelection() {
+        return selection;
     }
 }

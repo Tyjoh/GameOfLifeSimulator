@@ -12,14 +12,18 @@ public class ToolModelFactory implements ModelFactory {
         EditorToolRegistry toolRegistry = propertyBus.get(EditorToolRegistry.class);
         EditorState editorState = propertyBus.get(EditorState.class);
 
-        BrushTool brushTool = new BrushTool(editorState);
+        BrushTool brushTool = new BrushTool(editorState, commandProcessor);
         eventBus.listenFor(BrushConfigEvent.class, brushTool::handle);
         toolRegistry.registerTool(brushTool);
         propertyBus.publish(BrushTool.class, brushTool);
 
-        PencilTool pencilTool = new PencilTool(editorState);
+        PencilTool pencilTool = new PencilTool(editorState, commandProcessor);
         toolRegistry.registerTool(pencilTool);
         propertyBus.publish(PencilTool.class, pencilTool);
+
+        SelectionTool selectionTool = new SelectionTool(editorState, commandProcessor);
+        toolRegistry.registerTool(selectionTool);
+        propertyBus.publish(SelectionTool.class, selectionTool);
 
         editorState.getSelectedTool().set(brushTool.name());
     }

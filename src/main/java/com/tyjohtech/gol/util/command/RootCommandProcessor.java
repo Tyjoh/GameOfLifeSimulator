@@ -15,6 +15,11 @@ public class RootCommandProcessor implements CommandProcessor {
     }
 
     @Override
+    public void push(Command command) {
+        commandStack.push(command);
+    }
+
+    @Override
     public void undo() {
         if (commandStack.size() > 0) {
             Command command = commandStack.pop();

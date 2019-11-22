@@ -1,19 +1,24 @@
 package com.tyjohtech.gol.logic.editor.tool;
 
 import com.tyjohtech.gol.logic.editor.EditorState;
+import com.tyjohtech.gol.logic.editor.event.ToolActionEvent;
 import com.tyjohtech.gol.model.board.Board;
 import com.tyjohtech.gol.model.board.BoardRegion;
 import com.tyjohtech.gol.model.board.CellPosition;
 import com.tyjohtech.gol.model.board.CellState;
-import com.tyjohtech.gol.util.command.Command;
-import com.tyjohtech.gol.util.property.Property;
+import com.tyjohtech.gol.util.command.CommandProcessor;
 
 public class PencilTool implements EditorTool {
 
     private EditorState editorState;
+    private CommandProcessor commandProcessor;
 
-    public PencilTool(EditorState editorState) {
+    private Stroke currentStroke;
+
+    public PencilTool(EditorState editorState, CommandProcessor commandProcessor) {
         this.editorState = editorState;
+        this.commandProcessor = commandProcessor;
+        this.currentStroke = new Stroke();
     }
 
     @Override
@@ -27,36 +32,21 @@ public class PencilTool implements EditorTool {
     }
 
     @Override
-    public Command createCommand() {
+    public void handle(ToolActionEvent actionEvent) {
         CellPosition cursorPosition = editorState.getCursor().get();
-        return new PencilCommand(editorState.getBoard(), cursorPosition, editorState.getDrawState().get());
-    }
+        Board board = editorState.getBoard().get();
+        CellState newState = editorState.getDrawState().get();
+        CellState oldState = editorState.getBoard().get().getState(cursorPosition.getX(), cursorPosition.getY());
 
-    private static class PencilCommand implements Command {
-        private Property<Board> board;
-        private CellPosition position;
-        private CellState prevState;
-        private CellState newState;
+        StrokePoint strokePoint = new StrokePoint(cursorPosition, newState, oldState);
+        currentStroke.add(strokePoint);
 
-        private PencilCommand(Property<Board> board, CellPosition position, CellState newState) {
-            this.board = board;
-            this.position = position;
-            this.newState = newState;
-        }
+        board.setState(cursorPosition.getX(), cursorPosition.getY(), newState);
+        editorState.getBoard().pump();
 
-        @Override
-        public void execute() {
-            Board board = this.board.get();
-            prevState = board.getState(position.getX(), position.getY());
-            board.setState(position.getX(), position.getY(), newState);
-            this.board.pump();
-        }
-
-        @Override
-        public void undo() {
-            Board board = this.board.get();
-            board.setState(position.getX(), position.getY(), prevState);
-            this.board.pump();
+        if (actionEvent.getActionType() == ToolActionEvent.Type.END) {
+            commandProcessor.push(new StrokeCommand(editorState.getBoard(), currentStroke.clone()));
+            currentStroke.clear();
         }
     }
 }

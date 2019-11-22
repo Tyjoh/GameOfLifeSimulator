@@ -26,6 +26,7 @@ public class SimulationCanvas extends Pane {
         this.viewModel.getCursorPosition().listen(value -> draw());
         this.viewModel.getActiveTool().listen(value -> draw());
         this.viewModel.getBoard().listen(value -> draw());
+        this.viewModel.getSelection().listen(value -> draw());
 
         this.canvas = new Canvas(400, 400);
 
@@ -55,6 +56,10 @@ public class SimulationCanvas extends Pane {
         String activeTool = this.viewModel.getActiveTool().get();
         EditorToolRenderer toolRenderer = this.toolRenderers.get(activeTool);
         toolRenderer.render(g);
+
+        if (viewModel.getSelection().isPresent()) {
+            this.drawSelection(viewModel.getSelection().get());
+        }
 
         if (viewModel.getCursorPosition().isPresent()) {
             this.drawCursor(viewModel.getCursorPosition().get());

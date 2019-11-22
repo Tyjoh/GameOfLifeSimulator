@@ -3,6 +3,7 @@ package com.tyjohtech.gol.view.simulation;
 import com.tyjohtech.gol.logic.editor.EditorState;
 import com.tyjohtech.gol.logic.editor.tool.BrushTool;
 import com.tyjohtech.gol.logic.editor.tool.PencilTool;
+import com.tyjohtech.gol.logic.editor.tool.SelectionTool;
 import com.tyjohtech.gol.model.Simulator;
 import com.tyjohtech.gol.util.ModelProvider;
 import com.tyjohtech.gol.util.event.EventBus;
@@ -11,6 +12,7 @@ import com.tyjohtech.gol.view.ViewFactory;
 import com.tyjohtech.gol.view.simulation.tool.BrushRenderer;
 import com.tyjohtech.gol.view.simulation.tool.EditorToolRenderer;
 import com.tyjohtech.gol.view.simulation.tool.PencilRenderer;
+import com.tyjohtech.gol.view.simulation.tool.SelectionRenderer;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 
@@ -36,6 +38,9 @@ public class SimulationCanvasFactory implements ViewFactory {
         BrushTool brushTool = propertyProvider.get(BrushTool.class);
         toolRenderers.put(brushTool.name(), new BrushRenderer(brushTool));
 
+        SelectionTool selectionTool = propertyProvider.get(SelectionTool.class);
+        toolRenderers.put(selectionTool.name(), new SelectionRenderer());
+
         Simulator simulator = propertyProvider.get(Simulator.class);
 
         SimulationCanvasViewModel viewModel = new SimulationCanvasViewModel();
@@ -43,6 +48,7 @@ public class SimulationCanvasFactory implements ViewFactory {
         viewModel.getBoard().bindTo(editorState.getBoard());
         viewModel.getCursorPosition().bindTo(editorState.getCursor());
         viewModel.getActiveTool().bindTo(editorState.getSelectedTool());
+        viewModel.getSelection().bindTo(editorState.getSelection());
 
         SimulationCanvas simulationCanvas = new SimulationCanvas(toolRenderers, viewModel);
         simulationCanvas.addEventHandler(MouseEvent.ANY, new SimulationCanvasEventHandler(eventBus, viewModel));
