@@ -2,13 +2,9 @@ package com.tyjohtech.gol.view.settings;
 
 import com.tyjohtech.gol.util.ModelProvider;
 import com.tyjohtech.gol.util.event.EventBus;
-import com.tyjohtech.gol.view.KeyValuePane;
 import com.tyjohtech.gol.view.MainViewPosition;
 import com.tyjohtech.gol.view.ViewFactory;
 import javafx.scene.Node;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
 
 public class SimulationSettingsFactory implements ViewFactory {
 
@@ -19,13 +15,8 @@ public class SimulationSettingsFactory implements ViewFactory {
 
     @Override
     public Node buildView(ModelProvider propertyProvider, EventBus eventBus) {
-
-        KeyValuePane settingsPane = new KeyValuePane();
+        SettingsPane settingsPane = new SettingsPane(eventBus);
         settingsPane.setPrefWidth(300);
-        settingsPane.add("Setting 1", new Slider(1, 10, 3));
-        settingsPane.add("Setting 2", new CheckBox());
-        settingsPane.add("Setting 3", new TextField("4352"));
-
         return settingsPane;
     }
 }

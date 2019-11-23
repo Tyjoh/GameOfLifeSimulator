@@ -4,7 +4,7 @@ import com.tyjohtech.gol.logic.editor.EditorState;
 import com.tyjohtech.gol.logic.editor.tool.BrushTool;
 import com.tyjohtech.gol.logic.editor.tool.PencilTool;
 import com.tyjohtech.gol.logic.editor.tool.SelectionTool;
-import com.tyjohtech.gol.model.Simulator;
+import com.tyjohtech.gol.logic.simulator.Simulator;
 import com.tyjohtech.gol.util.ModelProvider;
 import com.tyjohtech.gol.util.event.EventBus;
 import com.tyjohtech.gol.view.MainViewPosition;

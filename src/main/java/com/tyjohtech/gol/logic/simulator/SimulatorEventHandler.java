@@ -2,8 +2,6 @@ package com.tyjohtech.gol.logic.simulator;
 
 import com.tyjohtech.gol.logic.state.AppState;
 import com.tyjohtech.gol.logic.state.AppStateEvent;
-import com.tyjohtech.gol.model.Simulator;
-import com.tyjohtech.gol.model.SimulatorEvent;
 import com.tyjohtech.gol.util.event.EventBus;
 
 public class SimulatorEventHandler {
@@ -34,6 +32,10 @@ public class SimulatorEventHandler {
                 simulator.reset();
                 break;
         }
+    }
+
+    public void handle(SimulationConfigEvent simulationConfigEvent) {
+
     }
 
 }

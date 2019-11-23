@@ -1,7 +1,7 @@
 package com.tyjohtech.gol.view.toolbar;
 
 import com.tyjohtech.gol.logic.editor.event.DrawStateEvent;
-import com.tyjohtech.gol.model.SimulatorEvent;
+import com.tyjohtech.gol.logic.simulator.SimulatorEvent;
 import com.tyjohtech.gol.model.board.CellState;
 import com.tyjohtech.gol.util.event.EventBus;
 import javafx.event.ActionEvent;
@@ -16,6 +16,7 @@ public class Toolbar extends ToolBar {
     public Toolbar(ToolbarViewModel toolbarViewModel, EventBus eventBus) {
         this.toolbarViewModel = toolbarViewModel;
         this.eventBus = eventBus;
+
         Button draw = new Button("Draw");
         draw.setOnAction(this::handleDraw);
         Button erase = new Button("Erase");

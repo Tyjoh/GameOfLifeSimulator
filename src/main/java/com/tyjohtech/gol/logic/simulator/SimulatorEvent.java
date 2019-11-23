@@ -1,4 +1,4 @@
-package com.tyjohtech.gol.model;
+package com.tyjohtech.gol.logic.simulator;
 
 import com.tyjohtech.gol.util.event.Event;
 
