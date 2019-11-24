@@ -20,13 +20,13 @@ public class SimulationViewModel {
 
     public void onAppStateChanged(ApplicationState state) {
         if (state == ApplicationState.SIMULATING) {
-            this.simulation = new Simulation(boardViewModel.getBoard(), new StandardRule());
+            this.simulation = new Simulation(boardViewModel.getBoard().get(), new StandardRule());
         }
     }
 
     public void doStep() {
         this.simulation.step();
-        this.boardViewModel.setBoard(this.simulation.getBoard());
+        this.boardViewModel.getBoard().set(this.simulation.getBoard());
     }
 
     public void start() {

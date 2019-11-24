@@ -1,32 +1,15 @@
 package com.tyjohtech.gol.viewmodel;
 
-import java.util.LinkedList;
-import java.util.List;
+import com.tyjohtech.gol.util.Property;
 
 public class ApplicationViewModel {
 
-    private ApplicationState currentState;
-    private List<SimpleChangeListener<ApplicationState>> appStateListeners;
+    private Property<ApplicationState> applicationState = new Property<>(ApplicationState.EDITING);
 
-    public ApplicationViewModel(ApplicationState currentState) {
-        this.currentState = currentState;
-        this.appStateListeners = new LinkedList<>();
+    public ApplicationViewModel() {
     }
 
-    public void listenToAppState(SimpleChangeListener<ApplicationState> listener) {
-        this.appStateListeners.add(listener);
-    }
-
-    public void setCurrentState(ApplicationState newState) {
-        if (newState != this.currentState) {
-            this.currentState = newState;
-            notifyAppStateListeners();
-        }
-    }
-
-    private void notifyAppStateListeners() {
-        for (SimpleChangeListener<ApplicationState> appStateListener : appStateListeners) {
-            appStateListener.valueChanged(this.currentState);
-        }
+    public Property<ApplicationState> getApplicationState() {
+        return applicationState;
     }
 }

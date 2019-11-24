@@ -17,9 +17,9 @@ public class MainView extends BorderPane {
 
     private void onKeyPressed(KeyEvent keyEvent) {
         if (keyEvent.getCode() == KeyCode.D) {
-            this.editorViewModel.setDrawMode(CellState.ALIVE);
+            this.editorViewModel.getDrawMode().set(CellState.ALIVE);
         } else if (keyEvent.getCode() == KeyCode.E) {
-            this.editorViewModel.setDrawMode(CellState.DEAD);
+            this.editorViewModel.getDrawMode().set(CellState.DEAD);
         }
     }
 }
