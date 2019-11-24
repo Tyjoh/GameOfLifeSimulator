@@ -1,6 +1,6 @@
 package com.tyjohtech.gol.view.settings;
 
-import com.tyjohtech.gol.logic.simulator.SimulationConfig;
+import com.tyjohtech.gol.logic.simulator.config.SimulationConfig;
 import com.tyjohtech.gol.util.ModelProvider;
 import com.tyjohtech.gol.util.event.EventBus;
 import com.tyjohtech.gol.view.MainViewPosition;

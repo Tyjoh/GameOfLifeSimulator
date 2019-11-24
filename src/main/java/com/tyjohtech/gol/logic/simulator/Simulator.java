@@ -1,5 +1,6 @@
 package com.tyjohtech.gol.logic.simulator;
 
+import com.tyjohtech.gol.logic.simulator.config.SimulationConfig;
 import com.tyjohtech.gol.model.Simulation;
 import com.tyjohtech.gol.model.board.Board;
 import com.tyjohtech.gol.model.rule.StandardRule;

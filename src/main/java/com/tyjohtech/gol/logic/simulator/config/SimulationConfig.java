@@ -1,4 +1,4 @@
-package com.tyjohtech.gol.logic.simulator;
+package com.tyjohtech.gol.logic.simulator.config;
 
 import com.tyjohtech.gol.util.property.Property;
 

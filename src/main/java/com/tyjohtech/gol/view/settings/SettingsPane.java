@@ -1,6 +1,6 @@
 package com.tyjohtech.gol.view.settings;
 
-import com.tyjohtech.gol.logic.simulator.SimulationConfigEvent;
+import com.tyjohtech.gol.logic.simulator.config.SimulationConfigEvent;
 import com.tyjohtech.gol.util.event.EventBus;
 import com.tyjohtech.gol.view.KeyValuePane;
 import javafx.beans.Observable;
@@ -13,7 +13,6 @@ import javafx.scene.input.KeyEvent;
 
 public class SettingsPane extends KeyValuePane {
 
-    private SettingsViewModel settingsViewModel;
     private EventBus eventBus;
 
     private final Slider speed;
@@ -21,12 +20,10 @@ public class SettingsPane extends KeyValuePane {
     private final TextField iterations;
 
     public SettingsPane(SettingsViewModel settingsViewModel, EventBus eventBus) {
-        this.settingsViewModel = settingsViewModel;
         this.eventBus = eventBus;
 
         speed = new Slider(0.1, 10, 1);
         speed.valueChangingProperty().addListener(this::onSpeedChange);
-//        speed.valueProperty().addListener(this::onSpeedChange);
         settingsViewModel.getSimulationSpeed().listen(speed::setValue);
         this.add("Sim Speed", speed);
 

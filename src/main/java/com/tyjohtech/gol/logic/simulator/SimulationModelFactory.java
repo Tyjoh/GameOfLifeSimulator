@@ -1,6 +1,9 @@
 package com.tyjohtech.gol.logic.simulator;
 
 import com.tyjohtech.gol.logic.editor.EditorState;
+import com.tyjohtech.gol.logic.simulator.config.SimulationConfig;
+import com.tyjohtech.gol.logic.simulator.config.SimulationConfigEvent;
+import com.tyjohtech.gol.logic.simulator.config.SimulationConfigEventHandler;
 import com.tyjohtech.gol.model.ModelFactory;
 import com.tyjohtech.gol.util.ModelProvider;
 import com.tyjohtech.gol.util.command.CommandProcessor;
