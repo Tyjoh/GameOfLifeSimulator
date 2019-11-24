@@ -23,9 +23,16 @@ public class SimulationConfig {
         propertyMap.put("iterationCount", iterationCount);
     }
 
-    public <T> void handle(SimulationConfigEvent<T> configEvent) {
-        Property<T> property = propertyMap.get(configEvent.getFieldName());
-        property.set(configEvent.getValue());
+    public void set(String propertyKey, Object value) {
+        propertyMap.get(propertyKey).set(value);
+    }
+
+    public Object get(String propertyKey) {
+        return propertyMap.get(propertyKey).get();
+    }
+
+    public <T> Property<T> getProperty(String propertyKey) {
+        return propertyMap.get(propertyKey);
     }
 
     public Property<Double> getSimulationSpeed() {

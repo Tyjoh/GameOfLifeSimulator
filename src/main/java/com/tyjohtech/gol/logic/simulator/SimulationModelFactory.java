@@ -12,7 +12,9 @@ public class SimulationModelFactory implements ModelFactory {
     public void initialize(ModelProvider modelProvider, EventBus eventBus, CommandProcessor commandProcessor) {
         SimulationConfig simulationConfig = new SimulationConfig();
         modelProvider.publish(SimulationConfig.class, simulationConfig);
-        eventBus.listenFor(SimulationConfigEvent.class, simulationConfig::handle);
+
+        SimulationConfigEventHandler configEventHandler = new SimulationConfigEventHandler(simulationConfig, commandProcessor);
+        eventBus.listenFor(SimulationConfigEvent.class, configEventHandler::handle);
 
         EditorState editorBoard = modelProvider.get(EditorState.class);
 
