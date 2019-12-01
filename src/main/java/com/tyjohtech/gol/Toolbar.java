@@ -2,7 +2,7 @@ package com.tyjohtech.gol;
 
 import com.tyjohtech.gol.model.CellState;
 import com.tyjohtech.gol.util.event.EventBus;
-import com.tyjohtech.gol.viewmodel.EditorViewModel;
+import com.tyjohtech.gol.viewmodel.DrawModeEvent;
 import com.tyjohtech.gol.viewmodel.SimulatorEvent;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
@@ -12,10 +12,7 @@ public class Toolbar extends ToolBar {
 
     private EventBus eventBus;
 
-    private EditorViewModel editorViewModel;
-
-    public Toolbar(EditorViewModel editorViewModel, EventBus eventBus) {
-        this.editorViewModel = editorViewModel;
+    public Toolbar(EventBus eventBus) {
         this.eventBus = eventBus;
         Button draw = new Button("Draw");
         draw.setOnAction(this::handleDraw);
@@ -50,13 +47,11 @@ public class Toolbar extends ToolBar {
     }
 
     private void handleErase(ActionEvent actionEvent) {
-        System.out.println("Erase pressed");
-        this.editorViewModel.getDrawMode().set(CellState.DEAD);
+        this.eventBus.emit(new DrawModeEvent(CellState.DEAD));
     }
 
     private void handleDraw(ActionEvent actionEvent) {
-        System.out.println("Draw pressed");
-        this.editorViewModel.getDrawMode().set(CellState.ALIVE);
+        this.eventBus.emit(new DrawModeEvent(CellState.ALIVE));
     }
 
 }

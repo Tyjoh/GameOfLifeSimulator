@@ -3,6 +3,8 @@ package com.tyjohtech.gol.view;
 import com.tyjohtech.gol.model.Board;
 import com.tyjohtech.gol.model.CellPosition;
 import com.tyjohtech.gol.model.CellState;
+import com.tyjohtech.gol.util.event.EventBus;
+import com.tyjohtech.gol.viewmodel.BoardEvent;
 import com.tyjohtech.gol.viewmodel.BoardViewModel;
 import com.tyjohtech.gol.viewmodel.EditorViewModel;
 import javafx.geometry.Point2D;
@@ -22,9 +24,12 @@ public class SimulationCanvas extends Pane {
     private EditorViewModel editorViewModel;
     private BoardViewModel boardViewModel;
 
-    public SimulationCanvas(EditorViewModel editorViewModel, BoardViewModel boardViewModel) {
+    private EventBus eventBus;
+
+    public SimulationCanvas(EditorViewModel editorViewModel, BoardViewModel boardViewModel, EventBus eventBus) {
         this.editorViewModel = editorViewModel;
         this.boardViewModel = boardViewModel;
+        this.eventBus = eventBus;
         boardViewModel.getBoard().listen(this::draw);
         editorViewModel.getCursorPosition().listen(cellPosition -> draw(boardViewModel.getBoard().get()));
 
@@ -44,7 +49,8 @@ public class SimulationCanvas extends Pane {
 
     private void handleCursorMoved(MouseEvent event) {
         CellPosition cursorPosition = this.getSimulationCoordinates(event);
-        this.editorViewModel.getCursorPosition().set(cursorPosition);
+        BoardEvent boardEvent = new BoardEvent(BoardEvent.Type.CURSOR_MOVED, cursorPosition);
+        eventBus.emit(boardEvent);
     }
 
     @Override
@@ -55,7 +61,8 @@ public class SimulationCanvas extends Pane {
 
     private void handleDraw(MouseEvent event) {
         CellPosition cursorPosition = this.getSimulationCoordinates(event);
-        this.editorViewModel.boardPressed(cursorPosition);
+        BoardEvent boardEvent = new BoardEvent(BoardEvent.Type.PRESSED, cursorPosition);
+        eventBus.emit(boardEvent);
     }
 
     private CellPosition getSimulationCoordinates(MouseEvent event) {

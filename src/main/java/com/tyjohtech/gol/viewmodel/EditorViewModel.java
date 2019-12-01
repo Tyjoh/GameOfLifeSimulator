@@ -19,6 +19,21 @@ public class EditorViewModel {
         this.editorBoard = initialBoard;
     }
 
+    public void handle(DrawModeEvent drawModeEvent) {
+        this.drawMode.set(drawModeEvent.getDrawMode());
+    }
+
+    public void handle(BoardEvent boardEvent) {
+        switch (boardEvent.getEventType()) {
+            case PRESSED:
+                boardPressed(boardEvent.getCursorPosition());
+                break;
+            case CURSOR_MOVED:
+                cursorPosition.set(boardEvent.getCursorPosition());
+                break;
+        }
+    }
+
     public void onAppStateChanged(ApplicationState state) {
         if (state == ApplicationState.EDITING) {
             drawingEnabled = true;
@@ -28,7 +43,8 @@ public class EditorViewModel {
         }
     }
 
-    public void boardPressed(CellPosition cursorPosition) {
+    private void boardPressed(CellPosition cursorPosition) {
+        this.cursorPosition.set(cursorPosition);
         if (drawingEnabled) {
             this.editorBoard.setState(cursorPosition.getX(), cursorPosition.getY(), drawMode.get());
             this.boardViewModel.getBoard().set(this.editorBoard);

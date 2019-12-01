@@ -42,7 +42,7 @@ public class SimulationViewModel {
         }
     }
 
-    public void doStep() {
+    private void doStep() {
         if (applicationViewModel.getApplicationState().get() != ApplicationState.SIMULATING) {
             applicationViewModel.getApplicationState().set(ApplicationState.SIMULATING);
         }
@@ -51,15 +51,15 @@ public class SimulationViewModel {
         this.boardViewModel.getBoard().set(this.simulation.getBoard());
     }
 
-    public void start() {
+    private void start() {
         this.timeline.play();
     }
 
-    public void stop() {
+    private void stop() {
         this.timeline.stop();
     }
 
-    public void reset() {
+    private void reset() {
         this.simulation = new Simulation(editorViewModel.getBoard(), new StandardRule());
         this.applicationViewModel.getApplicationState().set(ApplicationState.EDITING);
     }
