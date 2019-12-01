@@ -1,25 +1,22 @@
 package com.tyjohtech.gol;
 
 import com.tyjohtech.gol.model.CellState;
-import com.tyjohtech.gol.viewmodel.ApplicationState;
-import com.tyjohtech.gol.viewmodel.ApplicationViewModel;
+import com.tyjohtech.gol.util.event.EventBus;
 import com.tyjohtech.gol.viewmodel.EditorViewModel;
-import com.tyjohtech.gol.viewmodel.SimulationViewModel;
+import com.tyjohtech.gol.viewmodel.SimulatorEvent;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
 
 public class Toolbar extends ToolBar {
 
-    private ApplicationViewModel applicationViewModel;
+    private EventBus eventBus;
 
-    private SimulationViewModel simulationViewModel;
     private EditorViewModel editorViewModel;
 
-    public Toolbar(EditorViewModel editorViewModel, ApplicationViewModel applicationViewModel, SimulationViewModel simulationViewModel) {
+    public Toolbar(EditorViewModel editorViewModel, EventBus eventBus) {
         this.editorViewModel = editorViewModel;
-        this.applicationViewModel = applicationViewModel;
-        this.simulationViewModel = simulationViewModel;
+        this.eventBus = eventBus;
         Button draw = new Button("Draw");
         draw.setOnAction(this::handleDraw);
         Button erase = new Button("Erase");
@@ -37,27 +34,19 @@ public class Toolbar extends ToolBar {
     }
 
     private void handleStop(ActionEvent actionEvent) {
-        this.simulationViewModel.stop();
+        this.eventBus.emit(new SimulatorEvent(SimulatorEvent.Type.STOP));
     }
 
     private void handleStart(ActionEvent actionEvent) {
-        switchToSimulatingState();
-        this.simulationViewModel.start();
+        this.eventBus.emit(new SimulatorEvent(SimulatorEvent.Type.START));
     }
 
     private void handleReset(ActionEvent actionEvent) {
-        this.applicationViewModel.getApplicationState().set(ApplicationState.EDITING);
+        this.eventBus.emit(new SimulatorEvent(SimulatorEvent.Type.RESET));
     }
 
     private void handleStep(ActionEvent actionEvent) {
-        System.out.println("Step pressed");
-
-        switchToSimulatingState();
-        this.simulationViewModel.doStep();
-    }
-
-    private void switchToSimulatingState() {
-        this.applicationViewModel.getApplicationState().set(ApplicationState.SIMULATING);
+        this.eventBus.emit(new SimulatorEvent(SimulatorEvent.Type.STEP));
     }
 
     private void handleErase(ActionEvent actionEvent) {

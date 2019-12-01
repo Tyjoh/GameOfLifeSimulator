@@ -42,4 +42,8 @@ public class EditorViewModel {
     public Property<CellPosition> getCursorPosition() {
         return cursorPosition;
     }
+
+    public Board getBoard() {
+        return editorBoard;
+    }
 }
