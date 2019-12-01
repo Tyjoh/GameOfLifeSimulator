@@ -1,9 +1,9 @@
-package com.tyjohtech.gol;
+package com.tyjohtech.gol.view;
 
+import com.tyjohtech.gol.logic.DrawModeEvent;
+import com.tyjohtech.gol.logic.SimulatorEvent;
 import com.tyjohtech.gol.model.CellState;
 import com.tyjohtech.gol.util.event.EventBus;
-import com.tyjohtech.gol.viewmodel.DrawModeEvent;
-import com.tyjohtech.gol.viewmodel.SimulatorEvent;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;

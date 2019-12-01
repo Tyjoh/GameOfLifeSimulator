@@ -1,9 +1,6 @@
 package com.tyjohtech.gol;
 
-import com.tyjohtech.gol.model.Board;
-import com.tyjohtech.gol.model.BoundedBoard;
-import com.tyjohtech.gol.model.CellState;
-import com.tyjohtech.gol.model.StandardRule;
+import com.tyjohtech.gol.model.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

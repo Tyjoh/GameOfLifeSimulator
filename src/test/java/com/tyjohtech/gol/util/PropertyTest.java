@@ -1,6 +1,5 @@
 package com.tyjohtech.gol.util;
 
-import com.tyjohtech.gol.viewmodel.SimpleChangeListener;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

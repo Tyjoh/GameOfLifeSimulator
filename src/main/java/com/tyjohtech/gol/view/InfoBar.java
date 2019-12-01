@@ -1,7 +1,8 @@
-package com.tyjohtech.gol;
+package com.tyjohtech.gol.view;
 
+import com.tyjohtech.gol.model.CellPosition;
 import com.tyjohtech.gol.model.CellState;
-import com.tyjohtech.gol.viewmodel.EditorViewModel;
+import com.tyjohtech.gol.viewmodel.InfoBarViewModel;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -15,20 +16,19 @@ public class InfoBar extends HBox {
     private Label cursor;
     private Label editingTool;
 
-    public InfoBar(EditorViewModel editorViewModel) {
-        editorViewModel.getDrawMode().listen(this::setDrawMode);
+    public InfoBar(InfoBarViewModel infoBarViewModel) {
         this.editingTool = new Label();
         this.cursor = new Label();
+
+        infoBarViewModel.getCurrentDrawMode().listen(this::setDrawMode);
+        infoBarViewModel.getCursorPosition().listen(this::setCursorPosition);
 
         Pane spacer = new Pane();
         spacer.setMinSize(0, 0);
         spacer.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        this.setCursorPosition(0, 0);
-
         this.getChildren().addAll(this.editingTool, spacer, this.cursor);
-
     }
 
     private void setDrawMode(CellState drawMode) {
@@ -42,8 +42,8 @@ public class InfoBar extends HBox {
         this.editingTool.setText(String.format(drawModeFormat, drawModeString));
     }
 
-    public void setCursorPosition(int x, int y) {
-        this.cursor.setText(String.format(cursorPosFormat, x, y));
+    private void setCursorPosition(CellPosition cursorPosition) {
+        this.cursor.setText(String.format(cursorPosFormat, cursorPosition.getX(), cursorPosition.getY()));
     }
 
 }

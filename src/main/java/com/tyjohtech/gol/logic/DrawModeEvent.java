@@ -1,4 +1,4 @@
-package com.tyjohtech.gol.viewmodel;
+package com.tyjohtech.gol.logic;
 
 import com.tyjohtech.gol.model.CellState;
 import com.tyjohtech.gol.util.event.Event;

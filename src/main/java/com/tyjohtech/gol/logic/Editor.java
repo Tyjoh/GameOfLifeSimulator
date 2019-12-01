@@ -1,22 +1,20 @@
-package com.tyjohtech.gol.viewmodel;
+package com.tyjohtech.gol.logic;
 
 import com.tyjohtech.gol.model.Board;
 import com.tyjohtech.gol.model.CellPosition;
 import com.tyjohtech.gol.model.CellState;
 import com.tyjohtech.gol.util.Property;
 
-public class EditorViewModel {
+public class Editor {
 
     private Property<CellState> drawMode = new Property<>(CellState.ALIVE);
     private Property<CellPosition> cursorPosition = new Property<>();
+    private Property<Board> editorBoard = new Property<>();
 
-    private BoardViewModel boardViewModel;
-    private Board editorBoard;
     private boolean drawingEnabled = true;
 
-    public EditorViewModel(BoardViewModel boardViewModel, Board initialBoard) {
-        this.boardViewModel = boardViewModel;
-        this.editorBoard = initialBoard;
+    public Editor(Board initialBoard) {
+        this.editorBoard.set(initialBoard);
     }
 
     public void handle(DrawModeEvent drawModeEvent) {
@@ -37,7 +35,7 @@ public class EditorViewModel {
     public void onAppStateChanged(ApplicationState state) {
         if (state == ApplicationState.EDITING) {
             drawingEnabled = true;
-            this.boardViewModel.getBoard().set(editorBoard);
+            this.editorBoard.set(this.editorBoard.get());
         } else {
             drawingEnabled = false;
         }
@@ -46,8 +44,9 @@ public class EditorViewModel {
     private void boardPressed(CellPosition cursorPosition) {
         this.cursorPosition.set(cursorPosition);
         if (drawingEnabled) {
-            this.editorBoard.setState(cursorPosition.getX(), cursorPosition.getY(), drawMode.get());
-            this.boardViewModel.getBoard().set(this.editorBoard);
+            Board board = this.editorBoard.get();
+            board.setState(cursorPosition.getX(), cursorPosition.getY(), drawMode.get());
+            this.editorBoard.set(board);
         }
     }
 
@@ -59,7 +58,7 @@ public class EditorViewModel {
         return cursorPosition;
     }
 
-    public Board getBoard() {
+    public Property<Board> getBoard() {
         return editorBoard;
     }
 }

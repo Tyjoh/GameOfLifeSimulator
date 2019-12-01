@@ -1,12 +1,12 @@
-package com.tyjohtech.gol.viewmodel;
+package com.tyjohtech.gol.logic;
 
 import com.tyjohtech.gol.util.Property;
 
-public class ApplicationViewModel {
+public class ApplicationStateManager {
 
     private Property<ApplicationState> applicationState = new Property<>(ApplicationState.EDITING);
 
-    public ApplicationViewModel() {
+    public ApplicationStateManager() {
     }
 
     public Property<ApplicationState> getApplicationState() {

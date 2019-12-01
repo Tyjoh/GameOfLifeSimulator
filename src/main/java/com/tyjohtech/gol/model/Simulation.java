@@ -1,8 +1,4 @@
-package com.tyjohtech.gol;
-
-import com.tyjohtech.gol.model.Board;
-import com.tyjohtech.gol.model.CellState;
-import com.tyjohtech.gol.model.SimulationRule;
+package com.tyjohtech.gol.model;
 
 public class Simulation {
 
