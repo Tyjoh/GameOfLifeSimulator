@@ -3,6 +3,7 @@ package com.tyjohtech.gol;
 import com.tyjohtech.gol.logic.*;
 import com.tyjohtech.gol.model.Board;
 import com.tyjohtech.gol.model.BoundedBoard;
+import com.tyjohtech.gol.state.EditorState;
 import com.tyjohtech.gol.util.event.EventBus;
 import com.tyjohtech.gol.view.InfoBar;
 import com.tyjohtech.gol.view.MainView;
@@ -27,16 +28,17 @@ public class App extends Application {
         BoardViewModel boardViewModel = new BoardViewModel();
         Board board = new BoundedBoard(20, 12);
 
-        Editor editor = new Editor(board);
+        EditorState editorState = new EditorState(board);
+        Editor editor = new Editor(editorState);
         eventBus.listenFor(DrawModeEvent.class, editor::handle);
         eventBus.listenFor(BoardEvent.class, editor::handle);
-        editor.getCursorPosition().listen(cursorPosition -> {
+        editorState.getCursorPosition().listen(cursorPosition -> {
             boardViewModel.getCursorPosition().set(cursorPosition);
         });
 
         Simulator simulator = new Simulator(appViewModel);
         eventBus.listenFor(SimulatorEvent.class, simulator::handle);
-        editor.getBoard().listen(editorBoard -> {
+        editorState.getEditorBoard().listen(editorBoard -> {
             simulator.getInitialBoard().set(editorBoard);
             boardViewModel.getBoard().set(editorBoard);
         });
@@ -45,6 +47,11 @@ public class App extends Application {
         });
 
         appViewModel.getApplicationState().listen(editor::onAppStateChanged);
+        appViewModel.getApplicationState().listen(newState -> {
+            if (newState == ApplicationState.EDITING) {
+                boardViewModel.getBoard().set(editorState.getEditorBoard().get());
+            }
+        });
 
         boardViewModel.getBoard().set(board);
 
@@ -52,10 +59,10 @@ public class App extends Application {
         Toolbar toolbar = new Toolbar(eventBus);
 
         InfoBarViewModel infoBarViewModel = new InfoBarViewModel();
-        editor.getCursorPosition().listen(cursorPosition -> {
+        editorState.getCursorPosition().listen(cursorPosition -> {
             infoBarViewModel.getCursorPosition().set(cursorPosition);
         });
-        editor.getDrawMode().listen(drawMode -> {
+        editorState.getDrawMode().listen(drawMode -> {
             infoBarViewModel.getCurrentDrawMode().set(drawMode);
         });
         InfoBar infoBar = new InfoBar(infoBarViewModel);

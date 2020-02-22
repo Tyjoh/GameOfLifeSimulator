@@ -1,24 +1,21 @@
 package com.tyjohtech.gol.logic;
 
-import com.tyjohtech.gol.model.Board;
 import com.tyjohtech.gol.model.CellPosition;
-import com.tyjohtech.gol.model.CellState;
-import com.tyjohtech.gol.util.Property;
+import com.tyjohtech.gol.state.EditorState;
 
 public class Editor {
 
-    private Property<CellState> drawMode = new Property<>(CellState.ALIVE);
-    private Property<CellPosition> cursorPosition = new Property<>();
-    private Property<Board> editorBoard = new Property<>();
+    private EditorState state;
 
     private boolean drawingEnabled = true;
 
-    public Editor(Board initialBoard) {
-        this.editorBoard.set(initialBoard);
+    public Editor(EditorState state) {
+        this.state = state;
     }
 
     public void handle(DrawModeEvent drawModeEvent) {
-        this.drawMode.set(drawModeEvent.getDrawMode());
+        DrawModeCommand command = new DrawModeCommand(drawModeEvent.getDrawMode());
+        command.execute(state);
     }
 
     public void handle(BoardEvent boardEvent) {
@@ -27,7 +24,7 @@ public class Editor {
                 boardPressed(boardEvent.getCursorPosition());
                 break;
             case CURSOR_MOVED:
-                cursorPosition.set(boardEvent.getCursorPosition());
+                cursorPositionChanged(boardEvent.getCursorPosition());
                 break;
         }
     }
@@ -35,30 +32,23 @@ public class Editor {
     public void onAppStateChanged(ApplicationState state) {
         if (state == ApplicationState.EDITING) {
             drawingEnabled = true;
-            this.editorBoard.set(this.editorBoard.get());
         } else {
             drawingEnabled = false;
         }
     }
 
     private void boardPressed(CellPosition cursorPosition) {
-        this.cursorPosition.set(cursorPosition);
+        cursorPositionChanged(cursorPosition);
         if (drawingEnabled) {
-            Board board = this.editorBoard.get();
-            board.setState(cursorPosition.getX(), cursorPosition.getY(), drawMode.get());
-            this.editorBoard.set(board);
+            BoardEditCommand command = new BoardEditCommand(cursorPosition, state.getDrawMode().get());
+            command.execute(this.state);
         }
     }
 
-    public Property<CellState> getDrawMode() {
-        return drawMode;
-    }
-
-    public Property<CellPosition> getCursorPosition() {
-        return cursorPosition;
-    }
-
-    public Property<Board> getBoard() {
-        return editorBoard;
+    private void cursorPositionChanged(CellPosition cursorPosition) {
+        EditorCommand command = (state) -> {
+            state.getCursorPosition().set(cursorPosition);
+        };
+        command.execute(this.state);
     }
 }
