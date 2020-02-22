@@ -1,5 +1,6 @@
 package com.tyjohtech.gol.logic.simulator;
 
+import com.tyjohtech.gol.command.CommandExecutor;
 import com.tyjohtech.gol.logic.ApplicationState;
 import com.tyjohtech.gol.logic.ApplicationStateManager;
 import com.tyjohtech.gol.model.Simulation;
@@ -16,11 +17,14 @@ public class Simulator {
     private Simulation simulation;
 
     private SimulatorState state;
+    private CommandExecutor commandExecutor;
+
     private boolean reset = true;
 
-    public Simulator(ApplicationStateManager applicationStateManager, SimulatorState state) {
+    public Simulator(ApplicationStateManager applicationStateManager, SimulatorState state, CommandExecutor commandExecutor) {
         this.applicationStateManager = applicationStateManager;
         this.state = state;
+        this.commandExecutor = commandExecutor;
 
         this.timeline = new Timeline(new KeyFrame(Duration.millis(500), event -> this.doStep()));
         this.timeline.setCycleCount(Timeline.INDEFINITE);
@@ -52,10 +56,8 @@ public class Simulator {
 
         this.simulation.step();
 
-        SimulatorCommand command = (state) -> {
-            state.getBoard().set(simulation.getBoard());
-        };
-        command.execute(this.state);
+        SimulatorCommand command = (state) -> state.getBoard().set(simulation.getBoard());
+        commandExecutor.execute(command);
     }
 
     private void start() {

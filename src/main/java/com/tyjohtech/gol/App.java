@@ -1,5 +1,6 @@
 package com.tyjohtech.gol;
 
+import com.tyjohtech.gol.command.CommandExecutor;
 import com.tyjohtech.gol.logic.ApplicationState;
 import com.tyjohtech.gol.logic.ApplicationStateManager;
 import com.tyjohtech.gol.logic.editor.BoardEvent;
@@ -11,6 +12,7 @@ import com.tyjohtech.gol.model.Board;
 import com.tyjohtech.gol.model.BoundedBoard;
 import com.tyjohtech.gol.state.EditorState;
 import com.tyjohtech.gol.state.SimulatorState;
+import com.tyjohtech.gol.state.StateRegistry;
 import com.tyjohtech.gol.util.event.EventBus;
 import com.tyjohtech.gol.view.InfoBar;
 import com.tyjohtech.gol.view.MainView;
@@ -30,13 +32,17 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         EventBus eventBus = new EventBus();
+        StateRegistry stateRegistry = new StateRegistry();
+        CommandExecutor commandExecutor = new CommandExecutor(stateRegistry);
 
         ApplicationStateManager appViewModel = new ApplicationStateManager();
         BoardViewModel boardViewModel = new BoardViewModel();
         Board board = new BoundedBoard(20, 12);
 
         EditorState editorState = new EditorState(board);
-        Editor editor = new Editor(editorState);
+        stateRegistry.registerState(EditorState.class, editorState);
+
+        Editor editor = new Editor(editorState, commandExecutor);
         eventBus.listenFor(DrawModeEvent.class, editor::handle);
         eventBus.listenFor(BoardEvent.class, editor::handle);
         editorState.getCursorPosition().listen(cursorPosition -> {
@@ -44,7 +50,9 @@ public class App extends Application {
         });
 
         SimulatorState simulatorState = new SimulatorState(board);
-        Simulator simulator = new Simulator(appViewModel, simulatorState);
+        stateRegistry.registerState(SimulatorState.class, simulatorState);
+
+        Simulator simulator = new Simulator(appViewModel, simulatorState, commandExecutor);
         eventBus.listenFor(SimulatorEvent.class, simulator::handle);
         editorState.getEditorBoard().listen(editorBoard -> {
             simulatorState.getBoard().set(editorBoard);
