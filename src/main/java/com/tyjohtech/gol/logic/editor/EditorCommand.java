@@ -1,4 +1,4 @@
-package com.tyjohtech.gol.logic;
+package com.tyjohtech.gol.logic.editor;
 
 import com.tyjohtech.gol.command.Command;
 import com.tyjohtech.gol.state.EditorState;

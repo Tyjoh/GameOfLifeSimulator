@@ -1,9 +1,16 @@
 package com.tyjohtech.gol;
 
-import com.tyjohtech.gol.logic.*;
+import com.tyjohtech.gol.logic.ApplicationState;
+import com.tyjohtech.gol.logic.ApplicationStateManager;
+import com.tyjohtech.gol.logic.editor.BoardEvent;
+import com.tyjohtech.gol.logic.editor.DrawModeEvent;
+import com.tyjohtech.gol.logic.editor.Editor;
+import com.tyjohtech.gol.logic.simulator.Simulator;
+import com.tyjohtech.gol.logic.simulator.SimulatorEvent;
 import com.tyjohtech.gol.model.Board;
 import com.tyjohtech.gol.model.BoundedBoard;
 import com.tyjohtech.gol.state.EditorState;
+import com.tyjohtech.gol.state.SimulatorState;
 import com.tyjohtech.gol.util.event.EventBus;
 import com.tyjohtech.gol.view.InfoBar;
 import com.tyjohtech.gol.view.MainView;
@@ -36,19 +43,21 @@ public class App extends Application {
             boardViewModel.getCursorPosition().set(cursorPosition);
         });
 
-        Simulator simulator = new Simulator(appViewModel);
+        SimulatorState simulatorState = new SimulatorState(board);
+        Simulator simulator = new Simulator(appViewModel, simulatorState);
         eventBus.listenFor(SimulatorEvent.class, simulator::handle);
         editorState.getEditorBoard().listen(editorBoard -> {
-            simulator.getInitialBoard().set(editorBoard);
+            simulatorState.getBoard().set(editorBoard);
             boardViewModel.getBoard().set(editorBoard);
         });
-        simulator.getCurrentBoard().listen(simulationBoard -> {
+        simulatorState.getBoard().listen(simulationBoard -> {
             boardViewModel.getBoard().set(simulationBoard);
         });
 
         appViewModel.getApplicationState().listen(editor::onAppStateChanged);
         appViewModel.getApplicationState().listen(newState -> {
             if (newState == ApplicationState.EDITING) {
+                simulatorState.getBoard().set(editorState.getEditorBoard().get());
                 boardViewModel.getBoard().set(editorState.getEditorBoard().get());
             }
         });

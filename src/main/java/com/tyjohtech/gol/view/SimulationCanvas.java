@@ -1,6 +1,6 @@
 package com.tyjohtech.gol.view;
 
-import com.tyjohtech.gol.logic.BoardEvent;
+import com.tyjohtech.gol.logic.editor.BoardEvent;
 import com.tyjohtech.gol.model.Board;
 import com.tyjohtech.gol.model.CellPosition;
 import com.tyjohtech.gol.model.CellState;
