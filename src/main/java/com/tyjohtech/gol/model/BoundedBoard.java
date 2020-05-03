@@ -32,6 +32,15 @@ public class BoundedBoard implements Board {
     }
 
     @Override
+    public void set(Board board) {
+        for (int y = 0; y < this.height; y++) {
+            for (int x = 0; x < this.width; x++) {
+                setState(x, y, board.getState(x, y));
+            }
+        }
+    }
+
+    @Override
     public CellState getState(int x, int y) {
         if (x < 0 || x >= this.width) {
             return CellState.DEAD;
