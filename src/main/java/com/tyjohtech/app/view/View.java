@@ -1,10 +1,14 @@
 package com.tyjohtech.app.view;
 
-import javafx.scene.Node;
+import com.tyjohtech.gol.components.infobar.InfoBar;
 
 public interface View {
 
-    void addCenter(SimulationCanvas canvas);
+    void addDrawLayer(DrawLayer canvas);
 
-    void setInfoBar(Node node);
+    void setInfoBar(InfoBar node);
+
+    void setCanvas(SimulationCanvas canvas);
+
+    void setToolbar(Toolbar toolbar);
 }

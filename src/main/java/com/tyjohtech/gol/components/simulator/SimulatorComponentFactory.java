@@ -2,9 +2,8 @@ package com.tyjohtech.gol.components.simulator;
 
 import com.tyjohtech.gol.ApplicationContext;
 import com.tyjohtech.gol.ComponentFactory;
-import com.tyjohtech.gol.components.board.ApplicationState;
 import com.tyjohtech.gol.components.board.BoardState;
-import com.tyjohtech.gol.components.editor.EditorState;
+import com.tyjohtech.gol.components.editor.state.EditorState;
 import com.tyjohtech.gol.model.Board;
 import com.tyjohtech.gol.model.BoundedBoard;
 
@@ -16,17 +15,16 @@ public class SimulatorComponentFactory implements ComponentFactory {
         EditorState editorState = context.getStateRegistry().getState(EditorState.class);
         SimulatorState simulatorState = context.getStateRegistry().getState(SimulatorState.class);
 
-        Simulator simulator = new Simulator(boardState, simulatorState, context.getCommandExecutor());
+        Simulator simulator = new Simulator(simulatorState);
         context.getEventBus().listenFor(SimulatorEvent.class, simulator::handle);
 
-        simulatorState.getBoard().listen(boardState.getBoardProperty()::set);
-        editorState.getEditorBoard().listen(simulatorState.getBoard()::set);
-
-        boardState.getApplicationState().listen(state -> {
-            if (state == ApplicationState.SIMULATING) {
-                simulatorState.getBoard().set(boardState.getBoardProperty().get());
+        simulatorState.listen(state -> {
+            if (state.isSimulating()) {
+                boardState.setBoard(simulatorState.getBoard());
             }
         });
+
+        editorState.getBoardState().listen(es -> simulatorState.setBoard(es.getBoard().copy()));
     }
 
     @Override

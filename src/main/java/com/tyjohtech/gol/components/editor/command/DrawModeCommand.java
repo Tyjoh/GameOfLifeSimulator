@@ -1,5 +1,6 @@
-package com.tyjohtech.gol.components.editor;
+package com.tyjohtech.gol.components.editor.command;
 
+import com.tyjohtech.gol.components.editor.state.EditorState;
 import com.tyjohtech.gol.model.CellState;
 
 public class DrawModeCommand implements EditorCommand {
@@ -12,6 +13,6 @@ public class DrawModeCommand implements EditorCommand {
 
     @Override
     public void execute(EditorState editorState) {
-        editorState.getDrawMode().set(newDrawMode);
+        editorState.getToolState().setDrawMode(newDrawMode);
     }
 }

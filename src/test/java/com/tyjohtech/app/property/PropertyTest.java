@@ -34,13 +34,13 @@ class PropertyTest {
         assertEquals(expected, listener.value);
     }
 
-    private class DoubleListener implements SimpleChangeListener<Double> {
+    private class DoubleListener implements ChangeListener<Double> {
 
         private boolean notified = false;
         private double value;
 
         @Override
-        public void valueChanged(Double value) {
+        public void onChange(Double value) {
             notified = true;
             this.value = value;
         }

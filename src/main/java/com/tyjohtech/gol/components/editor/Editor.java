@@ -1,18 +1,32 @@
 package com.tyjohtech.gol.components.editor;
 
 import com.tyjohtech.app.command.CommandExecutor;
-import com.tyjohtech.gol.components.board.ApplicationState;
+import com.tyjohtech.gol.components.editor.command.DrawModeCommand;
+import com.tyjohtech.gol.components.editor.state.EditState;
+import com.tyjohtech.gol.components.editor.state.EditorState;
+import com.tyjohtech.gol.components.editor.state.ToolState;
+import com.tyjohtech.gol.components.editor.tool.Tool;
+import com.tyjohtech.gol.components.simulator.SimulatorEvent;
 import com.tyjohtech.gol.model.CellPosition;
+
+import java.util.Map;
 
 public class Editor {
 
-    private EditorState state;
+    private final ToolState toolState;
+    private final EditState editState;
+    private final EditorState editorState;
+
+    private Map<String, Tool> tools;
 
     private boolean drawingEnabled = true;
     private CommandExecutor commandExecutor;
 
-    public Editor(EditorState state, CommandExecutor commandExecutor) {
-        this.state = state;
+    public Editor(EditorState state, Map<String, Tool> tools, CommandExecutor commandExecutor) {
+        this.toolState = state.getToolState();
+        this.editState = state.getEditState();
+        this.editorState = state;
+        this.tools = tools;
         this.commandExecutor = commandExecutor;
     }
 
@@ -22,34 +36,50 @@ public class Editor {
     }
 
     public void handle(BoardEvent boardEvent) {
+        cursorPositionChanged(boardEvent.getCursorPosition());
+
         switch (boardEvent.getEventType()) {
             case PRESSED:
-                boardPressed(boardEvent.getCursorPosition());
+                if (drawingEnabled)
+                    boardPressed();
                 break;
             case CURSOR_MOVED:
                 cursorPositionChanged(boardEvent.getCursorPosition());
                 break;
+            case RELEASED:
+                if (drawingEnabled)
+                    boardReleased();
+                break;
         }
     }
 
-    public void onAppStateChanged(ApplicationState state) {
-        if (state == ApplicationState.EDITING) {
-            drawingEnabled = true;
-        } else {
-            drawingEnabled = false;
+    public void handleSimulatorEvent(SimulatorEvent event) {
+        if (event.getEventType() == SimulatorEvent.Type.RESET) {
+            editorState.setEditing(true);
+        } else if (event.getEventType() == SimulatorEvent.Type.START || event.getEventType() == SimulatorEvent.Type.STEP) {
+            editorState.setEditing(false);
         }
     }
 
-    private void boardPressed(CellPosition cursorPosition) {
-        cursorPositionChanged(cursorPosition);
-        if (drawingEnabled) {
-            BoardEditCommand command = new BoardEditCommand(cursorPosition, state.getDrawMode().get());
-            commandExecutor.execute(command);
-        }
+    private void boardPressed() {
+        String currentTool = toolState.getCurrentTool();
+        Tool tool = tools.get(currentTool);
+        tool.begin();
+    }
+
+    private void boardReleased() {
+        String currentTool = toolState.getCurrentTool();
+        Tool tool = tools.get(currentTool);
+        tool.end();
     }
 
     private void cursorPositionChanged(CellPosition cursorPosition) {
-        EditorCommand command = (state) -> state.getCursorPosition().set(cursorPosition);
-        commandExecutor.execute(command);
+        toolState.setCursorPosition(cursorPosition);
+
+        if (editState.isInProgress()) {
+            String currentTool = toolState.getCurrentTool();
+            Tool tool = tools.get(currentTool);
+            tool.moved();
+        }
     }
 }

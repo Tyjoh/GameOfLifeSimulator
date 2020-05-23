@@ -4,6 +4,7 @@ import com.tyjohtech.app.command.CommandExecutor;
 import com.tyjohtech.app.event.EventBus;
 import com.tyjohtech.app.state.StateRegistry;
 import com.tyjohtech.app.view.MainView;
+import com.tyjohtech.app.view.SimulationCanvas;
 import com.tyjohtech.app.view.Toolbar;
 import com.tyjohtech.gol.components.board.BoardComponentFactory;
 import com.tyjohtech.gol.components.editor.EditorComponentFactory;
@@ -23,11 +24,21 @@ public class App2 extends Application {
         StateRegistry stateRegistry = new StateRegistry();
         CommandExecutor commandExecutor = new CommandExecutor(stateRegistry);
         EventBus eventBus = new EventBus();
+
         MainView view = new MainView(eventBus);
+
+        Toolbar toolbar = new Toolbar(eventBus);
+        view.setToolbar(toolbar);
+
+        int boardWidth = 20;
+        int boardHeight = 12;
+
+        SimulationCanvas simulationCanvas = new SimulationCanvas(eventBus, boardWidth, boardHeight);
+        view.setCanvas(simulationCanvas);
 
         ApplicationContext context = new ApplicationContext(
                 stateRegistry, eventBus, commandExecutor,
-                view, 20, 12);
+                view, boardWidth, boardHeight);
 
         List<ComponentFactory> components = new LinkedList<>();
         components.add(new BoardComponentFactory());
@@ -42,9 +53,6 @@ public class App2 extends Application {
         for (ComponentFactory component : components) {
             component.createView(context);
         }
-
-        Toolbar toolbar = new Toolbar(eventBus);
-        view.setTop(toolbar);
 
         Scene scene = new Scene(view, 1200, 800);
         stage.setScene(scene);
