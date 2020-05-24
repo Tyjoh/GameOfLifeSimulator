@@ -1,8 +1,7 @@
 module com.tyjohtech {
     requires javafx.controls;
-    exports com.tyjohtech.gol;
-    exports com.tyjohtech.gol.model;
-    exports com.tyjohtech.gol.util;
-    exports com.tyjohtech.gol.util.event;
-    exports com.tyjohtech.gol.viewmodel;
+    exports com.bytesmyth.gol;
+    exports com.bytesmyth.gol.model;
+    exports com.bytesmyth.app.event;
+    exports com.bytesmyth.gol.viewmodel;
 }

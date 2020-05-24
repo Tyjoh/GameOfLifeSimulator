@@ -11,9 +11,22 @@ public class MainView extends BorderPane {
 
     private EventBus eventBus;
 
+    private SimulationCanvas canvas;
+
     public MainView(EventBus eventBus) {
         this.eventBus = eventBus;
+
+        canvas = new SimulationCanvas(eventBus);
+        this.setCenter(canvas);
+
+        Toolbar toolbar = new Toolbar(eventBus);
+        this.setTop(toolbar);
+
         this.setOnKeyPressed(this::onKeyPressed);
+    }
+
+    public void addDrawLayer(DrawLayer drawLayer) {
+        canvas.addDrawLayer(drawLayer);
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
