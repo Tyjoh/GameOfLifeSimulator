@@ -3,6 +3,7 @@ package com.bytesmyth.gol.components.editor;
 import com.bytesmyth.app.command.CommandExecutor;
 import com.bytesmyth.gol.components.simulator.SimulatorEvent;
 import com.bytesmyth.gol.model.CellPosition;
+import com.bytesmyth.gol.model.CellState;
 
 public class Editor {
 
@@ -43,8 +44,13 @@ public class Editor {
     private void boardPressed(CellPosition cursorPosition) {
         cursorPositionChanged(cursorPosition);
         if (drawingEnabled) {
-            BoardEditCommand command = new BoardEditCommand(cursorPosition, state.getDrawMode().get());
-            commandExecutor.execute(command);
+            CellState currentState = this.state.getEditorBoard().get().getState(cursorPosition.getX(), cursorPosition.getY());
+            CellState newState = this.state.getDrawMode().get();
+
+            if (currentState != newState) {
+                BoardEditCommand command = new BoardEditCommand(cursorPosition, newState, currentState);
+                commandExecutor.execute(command);
+            }
         }
     }
 

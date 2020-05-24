@@ -1,5 +1,6 @@
 package com.bytesmyth.gol.view;
 
+import com.bytesmyth.app.command.CommandExecutor;
 import com.bytesmyth.app.event.EventBus;
 import com.bytesmyth.gol.components.editor.DrawModeEvent;
 import com.bytesmyth.gol.model.CellState;
@@ -10,11 +11,13 @@ import javafx.scene.layout.BorderPane;
 public class MainView extends BorderPane {
 
     private EventBus eventBus;
+    private CommandExecutor commandExecutor;
 
     private SimulationCanvas canvas;
 
-    public MainView(EventBus eventBus) {
+    public MainView(EventBus eventBus, CommandExecutor commandExecutor) {
         this.eventBus = eventBus;
+        this.commandExecutor = commandExecutor;
 
         canvas = new SimulationCanvas(eventBus);
         this.setCenter(canvas);
@@ -34,6 +37,8 @@ public class MainView extends BorderPane {
             this.eventBus.emit(new DrawModeEvent(CellState.ALIVE));
         } else if (keyEvent.getCode() == KeyCode.E) {
             this.eventBus.emit(new DrawModeEvent(CellState.DEAD));
+        } else if (keyEvent.isControlDown() && keyEvent.getCode() == KeyCode.Z) {
+            commandExecutor.undo();
         }
     }
 }

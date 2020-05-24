@@ -23,7 +23,7 @@ public class App extends Application {
         StateRegistry stateRegistry = new StateRegistry();
         CommandExecutor commandExecutor = new CommandExecutor(stateRegistry);
 
-        MainView mainView = new MainView(eventBus);
+        MainView mainView = new MainView(eventBus, commandExecutor);
 
         ApplicationContext context = new ApplicationContext(eventBus, commandExecutor, stateRegistry, mainView, 20, 12);
 
