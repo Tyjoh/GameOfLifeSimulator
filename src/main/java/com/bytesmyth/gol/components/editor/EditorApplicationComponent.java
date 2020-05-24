@@ -29,6 +29,9 @@ public class EditorApplicationComponent implements ApplicationComponent {
 
         ToolDrawLayer toolDrawLayer = new ToolDrawLayer(editorState);
         context.getMainView().addDrawLayer(toolDrawLayer);
+
+        CurrentEditDrawLayer editDrawLayer = new CurrentEditDrawLayer(editorState);
+        context.getMainView().addDrawLayer(editDrawLayer);
     }
 
     @Override
