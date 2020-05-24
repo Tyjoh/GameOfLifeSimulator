@@ -30,8 +30,9 @@ public class SimulationCanvas extends Pane {
         this.eventBus = eventBus;
 
         this.canvas = new Canvas(400, 400);
-        this.canvas.setOnMousePressed(this::handleDraw);
-        this.canvas.setOnMouseDragged(this::handleDraw);
+        this.canvas.setOnMousePressed(this::handlePressed);
+        this.canvas.setOnMouseReleased(this::handleReleased);
+        this.canvas.setOnMouseDragged(this::handleCursorMoved);
         this.canvas.setOnMouseMoved(this::handleCursorMoved);
 
         this.canvas.widthProperty().bind(this.widthProperty());
@@ -49,21 +50,27 @@ public class SimulationCanvas extends Pane {
         drawLayer.addInvalidationListener(this::draw);
     }
 
-    private void handleCursorMoved(MouseEvent event) {
-        CellPosition cursorPosition = this.getSimulationCoordinates(event);
-        BoardEvent boardEvent = new BoardEvent(BoardEvent.Type.CURSOR_MOVED, cursorPosition);
-        eventBus.emit(boardEvent);
-    }
-
     @Override
     public void resize(double width, double height) {
         super.resize(width, height);
         draw();
     }
 
-    private void handleDraw(MouseEvent event) {
+    private void handleCursorMoved(MouseEvent event) {
+        CellPosition cursorPosition = this.getSimulationCoordinates(event);
+        BoardEvent boardEvent = new BoardEvent(BoardEvent.Type.CURSOR_MOVED, cursorPosition);
+        eventBus.emit(boardEvent);
+    }
+
+    private void handlePressed(MouseEvent event) {
         CellPosition cursorPosition = this.getSimulationCoordinates(event);
         BoardEvent boardEvent = new BoardEvent(BoardEvent.Type.PRESSED, cursorPosition);
+        eventBus.emit(boardEvent);
+    }
+
+    private void handleReleased(MouseEvent event) {
+        CellPosition cursorPosition = this.getSimulationCoordinates(event);
+        BoardEvent boardEvent = new BoardEvent(BoardEvent.Type.RELEASED, cursorPosition);
         eventBus.emit(boardEvent);
     }
 
