@@ -1,4 +1,4 @@
-package com.bytesmyth.gol.util.event;
+package com.bytesmyth.app.event;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

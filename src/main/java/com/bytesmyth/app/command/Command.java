@@ -1,4 +1,4 @@
-package com.bytesmyth.gol.command;
+package com.bytesmyth.app.command;
 
 public interface Command<T> {
 

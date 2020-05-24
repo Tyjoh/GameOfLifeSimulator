@@ -1,8 +1,8 @@
 package com.bytesmyth.gol.viewmodel;
 
+import com.bytesmyth.app.observable.Property;
 import com.bytesmyth.gol.model.CellPosition;
 import com.bytesmyth.gol.model.CellState;
-import com.bytesmyth.gol.util.Property;
 
 public class InfoBarViewModel {
 

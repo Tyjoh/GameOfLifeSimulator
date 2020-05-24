@@ -1,6 +1,6 @@
 package com.bytesmyth.gol.logic.editor;
 
-import com.bytesmyth.gol.command.CommandExecutor;
+import com.bytesmyth.app.command.CommandExecutor;
 import com.bytesmyth.gol.logic.ApplicationState;
 import com.bytesmyth.gol.model.CellPosition;
 import com.bytesmyth.gol.state.EditorState;

@@ -1,6 +1,6 @@
 package com.bytesmyth.gol.logic.simulator;
 
-import com.bytesmyth.gol.command.Command;
+import com.bytesmyth.app.command.Command;
 import com.bytesmyth.gol.state.SimulatorState;
 
 public interface SimulatorCommand extends Command<SimulatorState> {

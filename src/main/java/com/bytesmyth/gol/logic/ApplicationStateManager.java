@@ -1,6 +1,6 @@
 package com.bytesmyth.gol.logic;
 
-import com.bytesmyth.gol.util.Property;
+import com.bytesmyth.app.observable.Property;
 
 public class ApplicationStateManager {
 

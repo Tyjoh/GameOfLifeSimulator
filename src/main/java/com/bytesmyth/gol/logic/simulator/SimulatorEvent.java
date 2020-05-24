@@ -1,6 +1,6 @@
 package com.bytesmyth.gol.logic.simulator;
 
-import com.bytesmyth.gol.util.event.Event;
+import com.bytesmyth.app.event.Event;
 
 public class SimulatorEvent implements Event {
 

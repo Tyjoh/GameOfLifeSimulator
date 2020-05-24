@@ -1,9 +1,9 @@
 package com.bytesmyth.gol.view;
 
+import com.bytesmyth.app.event.EventBus;
 import com.bytesmyth.gol.logic.editor.DrawModeEvent;
 import com.bytesmyth.gol.logic.simulator.SimulatorEvent;
 import com.bytesmyth.gol.model.CellState;
-import com.bytesmyth.gol.util.event.EventBus;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;

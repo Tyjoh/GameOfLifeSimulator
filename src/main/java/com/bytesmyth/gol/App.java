@@ -1,6 +1,8 @@
 package com.bytesmyth.gol;
 
-import com.bytesmyth.gol.command.CommandExecutor;
+import com.bytesmyth.app.command.CommandExecutor;
+import com.bytesmyth.app.event.EventBus;
+import com.bytesmyth.app.state.StateRegistry;
 import com.bytesmyth.gol.logic.ApplicationState;
 import com.bytesmyth.gol.logic.ApplicationStateManager;
 import com.bytesmyth.gol.logic.editor.BoardEvent;
@@ -12,8 +14,6 @@ import com.bytesmyth.gol.model.Board;
 import com.bytesmyth.gol.model.BoundedBoard;
 import com.bytesmyth.gol.state.EditorState;
 import com.bytesmyth.gol.state.SimulatorState;
-import com.bytesmyth.gol.state.StateRegistry;
-import com.bytesmyth.gol.util.event.EventBus;
 import com.bytesmyth.gol.view.InfoBar;
 import com.bytesmyth.gol.view.MainView;
 import com.bytesmyth.gol.view.SimulationCanvas;

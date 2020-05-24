@@ -1,5 +1,7 @@
 package com.bytesmyth.gol.util;
 
+import com.bytesmyth.app.observable.Property;
+import com.bytesmyth.app.observable.SimpleChangeListener;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

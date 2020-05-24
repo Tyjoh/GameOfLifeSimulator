@@ -1,4 +1,4 @@
-package com.bytesmyth.gol.util;
+package com.bytesmyth.app.observable;
 
 import java.util.LinkedList;
 import java.util.List;

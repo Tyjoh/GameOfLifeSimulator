@@ -1,4 +1,4 @@
-package com.bytesmyth.gol.util;
+package com.bytesmyth.app.observable;
 
 public interface SimpleChangeListener<V> {
     void valueChanged(V value);

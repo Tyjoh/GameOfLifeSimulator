@@ -1,6 +1,6 @@
-package com.bytesmyth.gol.command;
+package com.bytesmyth.app.command;
 
-import com.bytesmyth.gol.state.StateRegistry;
+import com.bytesmyth.app.state.StateRegistry;
 
 public class CommandExecutor {
 

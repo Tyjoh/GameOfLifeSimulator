@@ -1,4 +1,4 @@
-package com.bytesmyth.gol.state;
+package com.bytesmyth.app.state;
 
 import java.util.HashMap;
 import java.util.Map;

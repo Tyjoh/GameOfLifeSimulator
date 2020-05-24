@@ -1,4 +1,4 @@
-package com.bytesmyth.gol.util.event;
+package com.bytesmyth.app.event;
 
 public interface EventListener<T extends Event> {
 

@@ -1,8 +1,8 @@
 package com.bytesmyth.gol.view;
 
+import com.bytesmyth.app.event.EventBus;
 import com.bytesmyth.gol.logic.editor.DrawModeEvent;
 import com.bytesmyth.gol.model.CellState;
-import com.bytesmyth.gol.util.event.EventBus;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;

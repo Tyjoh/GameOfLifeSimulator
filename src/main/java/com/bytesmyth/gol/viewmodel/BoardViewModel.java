@@ -1,8 +1,8 @@
 package com.bytesmyth.gol.viewmodel;
 
+import com.bytesmyth.app.observable.Property;
 import com.bytesmyth.gol.model.Board;
 import com.bytesmyth.gol.model.CellPosition;
-import com.bytesmyth.gol.util.Property;
 
 public class BoardViewModel {
 

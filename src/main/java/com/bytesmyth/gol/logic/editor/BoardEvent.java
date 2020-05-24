@@ -1,7 +1,7 @@
 package com.bytesmyth.gol.logic.editor;
 
+import com.bytesmyth.app.event.Event;
 import com.bytesmyth.gol.model.CellPosition;
-import com.bytesmyth.gol.util.event.Event;
 
 public class BoardEvent implements Event {
 

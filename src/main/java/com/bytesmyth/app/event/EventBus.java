@@ -1,4 +1,4 @@
-package com.bytesmyth.gol.util.event;
+package com.bytesmyth.app.event;
 
 import java.util.HashMap;
 import java.util.LinkedList;
