@@ -1,4 +1,4 @@
-package com.bytesmyth.gol.logic.simulator;
+package com.bytesmyth.gol.components.simulator;
 
 import com.bytesmyth.app.event.Event;
 

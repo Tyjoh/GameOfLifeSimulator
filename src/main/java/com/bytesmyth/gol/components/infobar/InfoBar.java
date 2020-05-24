@@ -1,8 +1,7 @@
-package com.bytesmyth.gol.view;
+package com.bytesmyth.gol.components.infobar;
 
 import com.bytesmyth.gol.model.CellPosition;
 import com.bytesmyth.gol.model.CellState;
-import com.bytesmyth.gol.viewmodel.InfoBarViewModel;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;

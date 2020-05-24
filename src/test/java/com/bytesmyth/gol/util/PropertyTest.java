@@ -1,7 +1,7 @@
 package com.bytesmyth.gol.util;
 
+import com.bytesmyth.app.observable.ChangeListener;
 import com.bytesmyth.app.observable.Property;
-import com.bytesmyth.app.observable.SimpleChangeListener;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,13 +36,13 @@ class PropertyTest {
         assertEquals(expected, listener.value);
     }
 
-    private class DoubleListener implements SimpleChangeListener<Double> {
+    private class DoubleListener implements ChangeListener<Double> {
 
         private boolean notified = false;
         private double value;
 
         @Override
-        public void valueChanged(Double value) {
+        public void onChanged(Double value) {
             notified = true;
             this.value = value;
         }

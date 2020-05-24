@@ -1,7 +1,7 @@
 package com.bytesmyth.gol.view;
 
 import com.bytesmyth.app.event.EventBus;
-import com.bytesmyth.gol.logic.editor.BoardEvent;
+import com.bytesmyth.gol.components.editor.BoardEvent;
 import com.bytesmyth.gol.model.CellPosition;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;

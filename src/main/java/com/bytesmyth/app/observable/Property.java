@@ -6,7 +6,7 @@ import java.util.List;
 public class Property<T> {
 
     private T value;
-    private List<SimpleChangeListener<T>> listeners = new LinkedList<>();
+    private List<ChangeListener<T>> listeners = new LinkedList<>();
 
     public Property(T value) {
         this.value = value;
@@ -16,7 +16,7 @@ public class Property<T> {
         this(null);
     }
 
-    public void listen(SimpleChangeListener<T> listener) {
+    public void listen(ChangeListener<T> listener) {
         this.listeners.add(listener);
     }
 
@@ -34,8 +34,8 @@ public class Property<T> {
     }
 
     private void notifyListeners() {
-        for (SimpleChangeListener<T> listener : listeners) {
-            listener.valueChanged(this.value);
+        for (ChangeListener<T> listener : listeners) {
+            listener.onChanged(this.value);
         }
     }
 

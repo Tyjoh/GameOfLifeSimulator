@@ -1,4 +1,4 @@
-package com.bytesmyth.gol.viewmodel;
+package com.bytesmyth.gol.components.infobar;
 
 import com.bytesmyth.app.observable.Property;
 import com.bytesmyth.gol.model.CellPosition;

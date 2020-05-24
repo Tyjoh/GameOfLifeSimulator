@@ -1,81 +1,52 @@
 package com.bytesmyth.gol;
 
+import com.bytesmyth.app.command.CommandExecutor;
+import com.bytesmyth.app.event.EventBus;
+import com.bytesmyth.app.state.StateRegistry;
+import com.bytesmyth.gol.components.board.BoardApplicationComponent;
+import com.bytesmyth.gol.components.editor.EditorApplicationComponent;
+import com.bytesmyth.gol.components.infobar.InfoBarApplicationComponent;
+import com.bytesmyth.gol.components.simulator.SimulatorApplicationComponent;
+import com.bytesmyth.gol.view.MainView;
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/**
- * JavaFX App
- */
+import java.util.LinkedList;
+import java.util.List;
+
 public class App extends Application {
 
     @Override
-    public void start(Stage stage) {
-//        EventBus eventBus = new EventBus();
-//        StateRegistry stateRegistry = new StateRegistry();
-//        CommandExecutor commandExecutor = new CommandExecutor(stateRegistry);
-//
-//        ApplicationStateManager appViewModel = new ApplicationStateManager();
-//        BoardViewModel boardViewModel = new BoardViewModel();
-//        Board board = new BoundedBoard(20, 12);
-//
-//        EditorState editorState = new EditorState(board);
-//        stateRegistry.registerState(EditorState.class, editorState);
-//
-//        Editor editor = new Editor(editorState, commandExecutor);
-//        eventBus.listenFor(DrawModeEvent.class, editor::handle);
-//        eventBus.listenFor(BoardEvent.class, editor::handle);
-//        editorState.getCursorPosition().listen(cursorPosition -> {
-//            boardViewModel.getCursorPosition().set(cursorPosition);
-//        });
-//
-//        SimulatorState simulatorState = new SimulatorState(board);
-//        stateRegistry.registerState(SimulatorState.class, simulatorState);
-//
-//        Simulator simulator = new Simulator(appViewModel, simulatorState, commandExecutor);
-//        eventBus.listenFor(SimulatorEvent.class, simulator::handle);
-//        editorState.getEditorBoard().listen(editorBoard -> {
-//            simulatorState.getBoard().set(editorBoard);
-//            boardViewModel.getBoard().set(editorBoard);
-//        });
-//        simulatorState.getBoard().listen(simulationBoard -> {
-//            boardViewModel.getBoard().set(simulationBoard);
-//        });
-//
-//        appViewModel.getApplicationState().listen(editor::onAppStateChanged);
-//        appViewModel.getApplicationState().listen(newState -> {
-//            if (newState == ApplicationState.EDITING) {
-//                simulatorState.getBoard().set(editorState.getEditorBoard().get());
-//                boardViewModel.getBoard().set(editorState.getEditorBoard().get());
-//            }
-//        });
-//
-//        boardViewModel.getBoard().set(board);
-//
-//        SimulationCanvas simulationCanvas = new SimulationCanvas(boardViewModel, eventBus);
-//        Toolbar toolbar = new Toolbar(eventBus);
-//
-//        InfoBarViewModel infoBarViewModel = new InfoBarViewModel();
-//        editorState.getCursorPosition().listen(cursorPosition -> {
-//            infoBarViewModel.getCursorPosition().set(cursorPosition);
-//        });
-//        editorState.getDrawMode().listen(drawMode -> {
-//            infoBarViewModel.getCurrentDrawMode().set(drawMode);
-//        });
-//        InfoBar infoBar = new InfoBar(infoBarViewModel);
-//
-//        MainView mainView = new MainView(eventBus);
-//        mainView.setTop(toolbar);
-//        mainView.setCenter(simulationCanvas);
-//        mainView.setBottom(infoBar);
-//
-//        Scene scene = new Scene(mainView, 1200, 800);
-//        stage.setScene(scene);
-//        stage.show();
+    public void start(Stage stage) throws Exception {
+        EventBus eventBus = new EventBus();
+        StateRegistry stateRegistry = new StateRegistry();
+        CommandExecutor commandExecutor = new CommandExecutor(stateRegistry);
 
+        MainView mainView = new MainView(eventBus);
+
+        ApplicationContext context = new ApplicationContext(eventBus, commandExecutor, stateRegistry, mainView, 20, 12);
+
+        List<ApplicationComponent> components = new LinkedList<>();
+        components.add(new EditorApplicationComponent());
+        components.add(new SimulatorApplicationComponent());
+        components.add(new BoardApplicationComponent());
+        components.add(new InfoBarApplicationComponent());
+
+        for (ApplicationComponent component : components) {
+            component.initState(context);
+        }
+
+        for (ApplicationComponent component : components) {
+            component.initComponent(context);
+        }
+
+        Scene scene = new Scene(mainView, 1200, 800);
+        stage.setScene(scene);
+        stage.show();
     }
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
-
 }

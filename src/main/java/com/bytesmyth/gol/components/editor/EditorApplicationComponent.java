@@ -1,9 +1,9 @@
-package com.bytesmyth.gol.logic.editor;
+package com.bytesmyth.gol.components.editor;
 
 import com.bytesmyth.gol.ApplicationComponent;
 import com.bytesmyth.gol.ApplicationContext;
-import com.bytesmyth.gol.logic.board.BoardState;
-import com.bytesmyth.gol.logic.simulator.SimulatorEvent;
+import com.bytesmyth.gol.components.board.BoardState;
+import com.bytesmyth.gol.components.simulator.SimulatorEvent;
 import com.bytesmyth.gol.model.Board;
 import com.bytesmyth.gol.model.BoundedBoard;
 

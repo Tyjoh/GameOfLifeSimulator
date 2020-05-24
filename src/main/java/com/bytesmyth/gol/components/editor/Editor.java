@@ -1,7 +1,7 @@
-package com.bytesmyth.gol.logic.editor;
+package com.bytesmyth.gol.components.editor;
 
 import com.bytesmyth.app.command.CommandExecutor;
-import com.bytesmyth.gol.logic.simulator.SimulatorEvent;
+import com.bytesmyth.gol.components.simulator.SimulatorEvent;
 import com.bytesmyth.gol.model.CellPosition;
 
 public class Editor {

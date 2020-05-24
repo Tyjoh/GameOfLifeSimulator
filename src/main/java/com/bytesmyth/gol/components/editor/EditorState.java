@@ -1,4 +1,4 @@
-package com.bytesmyth.gol.logic.editor;
+package com.bytesmyth.gol.components.editor;
 
 import com.bytesmyth.app.observable.Property;
 import com.bytesmyth.gol.model.Board;

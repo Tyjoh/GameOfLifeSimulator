@@ -1,4 +1,4 @@
-package com.bytesmyth.gol.logic.board;
+package com.bytesmyth.gol.components.board;
 
 import com.bytesmyth.gol.ApplicationComponent;
 import com.bytesmyth.gol.ApplicationContext;

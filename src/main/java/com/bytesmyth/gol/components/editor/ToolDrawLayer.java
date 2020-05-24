@@ -1,4 +1,4 @@
-package com.bytesmyth.gol.logic.editor;
+package com.bytesmyth.gol.components.editor;
 
 import com.bytesmyth.gol.model.CellPosition;
 import com.bytesmyth.gol.view.AbstractDrawLayer;
